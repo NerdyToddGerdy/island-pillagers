@@ -4,74 +4,51 @@
   <meta charset="utf-8">
   <title>Island Pillaging</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="shortcut icon"
- href="images/flag.png" />
+  <link rel="shortcut icon" href="images/flag.png" />
   <link href="https://fonts.googleapis.com/css?family=Cinzel+Decorative|IM+Fell+English+SC" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/sweetalert2/6.4.4/sweetalert2.min.js"></script>
 </head>
 <body>
-  <div class="alert">
-
-  </div>
   <div class="container">
 
     <h1><img src="images/flag.png" alt="ARRGGG!!">  ISLAND PILLAGING</h1>
     <div class="map">
       <div class="space player1" id="space-0"><h2>2</h2></div>
-      <div class="space" id=
-      "space-1"><h2>0</h2></div>
-      <div class="space" id=
-      "space-2"><h2>0</h2></div>
-      <div class="space" id=
-      "space-3"><h2>0</h2></div>
-      <div class="space" id=
-      "space-4"><h2>0</h2></div>
-      <div class="space" id=
-      "space-5"><h2>0</h2></div>
-      <div class="space" id=
-      "space-6"><h2>0</h2></div>
-      <div class="space" id=
-      "space-7"><h2>0</h2></div>
-      <div class="space" id=
-      "space-8"><h2>0</h2></div>
-      <div class="space" id=
-      "space-9"><h2>0</h2></div>
-      <div class="space" id=
-      "space-10"><h2>0</h2></div>
-      <div class="space" id=
-      "space-11"><h2>0</h2></div>
-      <div class="space" id=
-      "space-12"><h2>0</h2></div>
-      <div class="space" id=
-      "space-13"><h2>0</h2></div>
-      <div class="space" id=
-      "space-14"><h2>0</h2></div>
+      <div class="space" id="space-1"><h2>0</h2></div>
+      <div class="space" id="space-2"><h2>0</h2></div>
+      <div class="space" id="space-3"><h2>0</h2></div>
+      <div class="space" id="space-4"><h2>0</h2></div>
+      <div class="space" id="space-5"><h2>0</h2></div>
+      <div class="space" id="space-6"><h2>0</h2></div>
+      <div class="space" id="space-7"><h2>0</h2></div>
+      <div class="space" id="space-8"><h2>0</h2></div>
+      <div class="space" id="space-9"><h2>0</h2></div>
+      <div class="space" id="space-10"><h2>0</h2></div>
+      <div class="space" id="space-11"><h2>0</h2></div>
+      <div class="space" id="space-12"><h2>0</h2></div>
+      <div class="space" id="space-13"><h2>0</h2></div>
+      <div class="space" id="space-14"><h2>0</h2></div>
       <div class="space player2" id="space-15"><h2>2</h2></div>
     </div>
     <div class="side-bar">
       <div class="button">End Phase</div>
       <div class="turns">
-        <div class='player-turn'></div>
-        <div class="phase"></div>
+        <div id="player-turn"></div>
+        <div id="phase"></div>
+        <div id="round-counter">Round 1</div>
       </div>
-      <div class="scores">
-        <div class="Player-Scores">
-          <div class="player1-points"></div>
-          <div class="player2-points"></div>
-        </div>
+      <div id="dice-result" hidden>
+        <div id="dice-attacker"></div>
+        <div id="dice-defender"></div>
+        <div id="dice-outcome"></div>
       </div>
+      <div class="scores"></div>
       <div class="rules"></div>
     </div>
   </div>
   <div class="footer">
-    Created by <a href="https://twitter.com/NerdyToddGerdy?lang=en"> Todd C Gerdy</a> through the <a href="https://generalassemb.ly/">GA</a> WDIR course.
+    Created by <a href="https://twitter.com/NerdyToddGerdy?lang=en"> Todd C Gerdy</a> through the <a href="https://generalassemb.ly/">GA</a> WDIR course. | <a href="https://nerdytoddgerdy.github.io/nerdy-gerdy-games/">More Games</a>
   </div>
-
-
-  <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
 
   <script src="js/app.js"></script>
 </body>

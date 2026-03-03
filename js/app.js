@@ -1,400 +1,280 @@
-console.log("app.js is alive");
-$(function(){
-  console.log("so is jQuery");
-  //====================================================
-  //                 GRAB ELEMENT
-  //====================================================
-  //Grab the spaces
-  var $spaces = $('.space');
-  var $button = $('.button');
-  var $player1ControlledSpaces = $('.player1');
-  var $player2ControlledSpaces = $('.player2');
-  var counter = 0;
-  var $player1Score = $('.player1').length;
-  var $player2Score = $('.player2').length;
+'use strict';
 
+document.addEventListener('DOMContentLoaded', () => {
 
-  // add controlled amount to player1
-  player1.$numberOfControlledSpaces = $player1ControlledSpaces.length;
+const GRID_SIZE = 16;
+const COLS = 4;
 
-  // add controlled amount to player2
-  player2.$numberOfControlledSpaces = $player2ControlledSpaces.length;
-
-
-  //====================================================
-  //                EVENT HANDLER
-  //====================================================
-
-  var eventHandler = {
-    resetSpace() {
-      console.log('HERE BE DRAGONS!!!');
-      game.resetting();
-    },
-    newSpace() {
-      console.log('BEGINNING OF NEWSPACE<><><><><><><><><><><><>');
-      $(this).addClass('new-space');
-      clickedNumber2 = $(this).index();
-      clickedText2= $(this).text();
-      console.log('#2: ' + clickedNumber2);
-      game.attackPhase();
-      eventHandler.resetSpace();
-      console.log('END OF NEWSPACE<><><><><><><><><><><><>');
-    },
-
-// we will talk later.
-
-    // triggerClickedSpace : function(){
-    //   for (var i = 0; i < 16; i++) {
-    //     if (parseInt($('#space-' + i).text()) < 1)  {
-    //       $('#space-' + i).off();
-    //       console.log('NOT CLICKABLE DUH=======================');
-    //     } else {
-    //       $('#space-' + i).on('click', eventHandler.clickedSpace);
-    //       console.log('clickable duh =======================');
-    //     }
-    //   }
-    //   eventHandler.clickedSpace();
-    // },
-    clickedSpace() {
-      console.log('BEGINNING OF CLICKEDSPACE<><><><><><><><><><><><>');
-
-
-
-
-
-
-
-
-
-      //******This Section finds the index of the 4 surrounding spaces.
-      var thisLocation = $(this).index();
-      // console.log(thisLocation + ' here');
-      var upLocation = thisLocation-4;
-      // console.log(upLocation + ' up');
-      var rightLocation = thisLocation+1;
-      // console.log(rightLocation + ' right');
-      var downLocation = thisLocation+4;
-      // console.log(downLocation + ' down');
-      var leftLocation = thisLocation-1;
-      // console.log(leftLocation + ' left');
-
-
-
-
-
-
-
-
-
-      //******This section creates Vars that will add the Class with the border to the possible options
-      var addBorderUp = function(){
-        $('#space-' + upLocation).not($('.' + game.currentPlayer)).addClass('new-space');
-      };
-      var addBorderRight = function(){
-        $('#space-' + rightLocation).not($('.' + game.currentPlayer)).addClass('new-space');
-      };
-      var addBorderDown =function(){
-        $('#space-' + downLocation).not($('.' + game.currentPlayer)).addClass('new-space');
-      };
-      var addBorderLeft =function(){
-        $('#space-' + leftLocation).not($('.' + game.currentPlayer)).addClass('new-space');
-      };
-
-      console.log($(this));
-      //This statement fixes the side from looking at the far sides of the grid.
-      // var thatThing = parseInt($(this).text())
-
-      if (parseInt($(this).text()) >= 2) {
-        console.log('ok');
-        console.log(typeof $(this).text());
-
-        if (thisLocation === 3) {
-          addBorderDown();
-          addBorderLeft();
-        } else if (thisLocation === 4 || thisLocation === 8) {
-          addBorderDown();
-          addBorderUp();
-          addBorderRight();
-        } else if (thisLocation === 7 || thisLocation === 11) {
-          addBorderUp();
-          addBorderLeft();
-          addBorderDown();
-        } else if (thisLocation === 12) {
-          addBorderUp();
-          addBorderRight();
-        } else {
-          addBorderUp();
-          addBorderRight();
-          addBorderDown();
-          addBorderLeft();
-        }
-        $(this).addClass('clicked-space');
-      } else {
-        // $('#space-' + thisLocation).off();
-        // $('#space-' + rightLocation).off();
-        // $('#space-' + downLocation).off();
-        // $('#space-' + leftLocation).off();
-        alert('You do not have enough soldiers here to attack. Please pick another island or end the phase.');
-        // game.resetting(); //clears everything
-      }
-
-      // $(this).addClass('clicked-space');
-      $('.space').off(); //removed button from all spaces
-      $(this).on('click', eventHandler.resetSpace); //clears everything
-      // console.log('classAdded');
-      clickedNumber1 = thisLocation;
-      clickedText1 = $(this).text();
-
-
-      $('#space-' + upLocation).not($('.' + game.currentPlayer)).on('click', eventHandler.newSpace);
-      $('#space-' + rightLocation).not($('.' + game.currentPlayer)).on('click', eventHandler.newSpace);
-      $('#space-' + downLocation).not($('.' + game.currentPlayer)).on('click', eventHandler.newSpace);
-      $('#space-' + leftLocation).not($('.' + game.currentPlayer)).on('click', eventHandler.newSpace);
-
-      console.log(clickedText1);//text in div
-      console.log('#1: ' + clickedNumber1);//index #
-      console.log('END OF CLICKEDSPACE<><><><><><><><><><><><>');
-    },
-    $currentId : $(this).attr('id'),
-  };
-  test = eventHandler.clickedSpace;
-  //====================================================
-  //                EVENT LISTENER
-  //====================================================
-
-  var testing = function(){
-    console.log('BEGINNING OF TESTING<><><><><><><><><><><><>');
-    var $player1Score = $('.player1').length;
-    var $player2Score = $('.player2').length;
-    $('.scores').html('<p>Player 1\'s points: ' + $player1Score + '</p> <p>Player 2\'s points: ' + $player2Score + '</p>');
-    $('.rules').html('<h3>Attack Phase</h3><p>By selecting any of your spaces that have at least 2 points in it, you can attack any space touching yours horizontally or vertically. Repeat until you have no more possible moves.  When done, press \'End Phase\' to continue.</p>');
-
-    // $('.phase').text('Attack Phase');
-    if (toggle === true) {
-      game.currentPlayer = 'player1';
-      otherPlayer = 'player2';
-      $('.turns').html('<p>Player 1\'s turn</p><p class="phase">Attacking Phase</p>').css({'box-shadow':'inset 0 0 0 10px slategrey'});
-      console.log(game.currentPlayer);
-    }else{
-      game.currentPlayer = 'player2';
-      otherPlayer = 'player1';
-      $('.turns').html('<p>Player 2\'s turn</p><p class="phase"><p>Attacking Phase</p>').css({'box-shadow':'inset 0 0 0 10px #673131'});
-      console.log(game.currentPlayer);
-    }
-    // console.log(parseInt($('.'+game.currentPlayer).text()));
-    // if (parseInt($('.'+game.currentPlayer).text()) > 1) {
-    //
-    //
-    //   console.log('IS CLICKABLE ' +parseInt( $('.'+game.currentPlayer).text()));
-      $('.'+game.currentPlayer).on('click', eventHandler.clickedSpace);
-
-
-
-
-    // }
-    // else {
-    //   console.log('ISN\'T CLICKABLE' + $('.'+game.currentPlayer).text());
-    //   $('.'+game.currentPlayer).unbind('click', eventHandler.clickedSpace);
-    // }
-    console.log('END OF TESTING<><><><><><><><><><><><>');
-  };
-
-  $button.on('click', eventHandler.clickedButton);
-
-  begin = testing;
-  clickedSpace = eventHandler.clickedSpace;
-  testing();
-}); //End of Window onload**************************
-
-
-/////////////Objects
-var clickedSpace;
-var clickedNumber1 = -1;
-var clickedNumber2 = -1;
-var clickedText1 = '';
-var clickedText2 = '';
-var newSoldiers = 0;
-var otherPlayer;
-var test;
-var testing;
-var begin;
-var toggle = true;
-
-
-var player1 = {
-  name:'',
-  playerColor:'',
-  $numberOfControlledSpaces:$('.player1').length,
-  numberOfSoldiers:2,
-  currnetlyContolledSpaces:[]
-};
-
-var player2 = {
-  name:'',
-  playerColor:'',
-  $numberOfControlledSpaces:$('.player2').length,
-  numberOfSoldiers:2,
-  currnetlyContolledSpaces:[]
-};
-
-var game = {
-  currentPlayer:'player1',
-  // currentPlayerString:
-  gameRound:0,
-  currentPhase:'Attaack',
-
-
-  checkForWinner: function(){
-    console.log('CHECKING FOR WINNER');
-    player1.$numberOfControlledSpaces = $('.player1').length;
-    player1.$numberOfControlledSpaces = $('.player1').length;
-    //if all boxes are one color or the other.
-    if (player1.$numberOfControlledSpaces == 16){
-      alert('Congratulations ' + player1.name + "!!  You have won the game!");
-    } else if (player2.$numberOfControlledSpaces == 16){
-      alert('Congratulations ' + player2.name + "!!  You have won the game!");
-    } else {
-      console.log('NO WINNER YET');
-      return;
-    }
-  },
-
-
-  resetting: function(){
-    $('.space').removeClass('clicked-space').removeClass('new-space');
-    console.log('clicked-space and new-space classRemoved');
-    $('.space').off('click');
-    clickedNumber1 = '';
-    clickedNumber2 = '';
-    $('.' + game.currentPlayer).on('click',clickedSpace);
-  },
-
-
-  claimLand: function(){
-    console.log("CLAIMING LAND");
-    clickedText2 = Math.ceil(clickedText1 /2);
-    // console.log(clickedText2);
-    clickedText1 = clickedText1 - clickedText2; // winning space is now split among the 2 spaces
-    // console.log(clickedText1);
-    console.log('currentPlayer = '+game.currentPlayer);
-    $('#space-' + clickedNumber2).removeClass(otherPlayer).addClass(game.currentPlayer);
-    $('#space-' + clickedNumber1).html('<h2>'+clickedText1+'</h2>');
-    $('#space-' + clickedNumber2).html('<h2>'+clickedText2+'</h2>');
-    console.log('end of attack phase');
-    $('.clicked-space').off('click');
-    $('.new-space').off('click');
-    console.log('claimLand>>>resetting');
-  },
-
-
-  attackPhase: function(){
-    // console.log('Starting Attack Phase');
-    $('.button').off();
-    $('.button').on('click', game.hirePhase);
-    if (clickedText2 === 0 ) {
-      this.claimLand();
-    } else{
-      // console.log(clickedText2 + "this is the second clicked");
-      game.rollOfDice();
-    }
-    game.resetting();
-  },
-
-
-  rollOfDice: function(){
-    // console.log("Beginning dice roll");
-    var attackerTotal = 0;
-    var defenderTotal = 0;
-    // $('.button').on('click',game.hirePhase)
-    var sixSidedDie = function(){
-      return Math.ceil(Math.random() * 6);
+class Game {
+  constructor() {
+    this.toggle        = true;       // true = player1's turn
+    this.currentPlayer = 'player1';
+    this.otherPlayer   = 'player2';
+    this.currentPhase  = 'attack';   // 'attack' | 'hire'
+    this.gameRound     = 1;
+    this.clickedIndex1 = -1;
+    this.clickedIndex2 = -1;
+    this.clickedUnits1 = 0;
+    this.clickedUnits2 = 0;
+    this.newSoldiers   = 0;
+    this.players = {
+      player1: { name: 'Player 1' },
+      player2: { name: 'Player 2' },
     };
-    for (var i = 0; i < parseInt(clickedText1); i++) {
-      attackerTotal = attackerTotal + sixSidedDie();
-      // console.log('doing the attack roll');
-    }
-    // console.log("Attacker Roll " +parseInt(attackerTotal));
-    for (var j = 0; j < parseInt(clickedText2); j++) {
-      defenderTotal = defenderTotal + sixSidedDie();
-    }
-    // console.log('Defender Roll ' + defenderTotal);
-    if (attackerTotal > defenderTotal) {
-      // console.log('Attacker Wins');
-      game.claimLand();
-    }else {
-      $('#space-' + clickedNumber1).html('<h2>'+1+'</h2>');
-    }
-    // console.log('defender wins');
-  },////Running to my specifications!!!
 
+    // Cached DOM references
+    this.mapEl    = document.querySelector('.map');
+    this.buttonEl = document.querySelector('.button');
+  }
 
-  endOfRound: function(){
-    // console.log('END OF ROUND  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    $('.new-space').removeClass('new-space');
-    $('.clicked-space').removeClass('clicked-space');
+  // ── Bootstrap ──────────────────────────────────────────
 
-    // console.log(clickedText1);
-    // console.log('#1: ' + clickedNumber1);
-    if (toggle === true) {
-      toggle = false;
-      // console.log('true >> false');
-    } else {
-      toggle = true;
-      // console.log('false >> true');
-    }
-    // console.log("Toggle = " + toggle);
-    begin();
-  },
-
-
-
-  hirePhase: function(){
-    game.checkForWinner();
-
-    $(".button").animate({left: '250px'});
-    //Comes from attackPhase
-    $('.turns').html('<p>' + game.currentPlayer +'\'s turn</p><p class="phase"><p>Rebuild Phase</p>');
-    var curentPlayerClass = '.' + game.currentPlayer;
-    console.log('.' + game.currentPlayer);
-    console.log(game.currentPlayer + " HERE!!!!!!!!!!!!!!!!!!!!!!!");
-    // Calculate the number of spaces currently owned.
-
-    $(curentPlayerClass).addClass('new-space');
-    console.log(player2.$numberOfControlledSpaces);
-
-    if (game.currentPlayer === 'player1') {
-      player1.$numberOfControlledSpaces = $('.' + game.currentPlayer).length;
-      newSoldiers = player1.$numberOfControlledSpaces;
-      console.log('player1 gets to hire now');
-
-    } else {
-      console.log(player2.$numberOfControlledSpaces + ' = else statement');
-      console.log($('.' + game.currentPlayer).length + ' = currentPlayer length');
-      player2.$numberOfControlledSpaces = ($('.' + game.currentPlayer).length);
-      console.log($('.' + game.currentPlayer).length);
-      newSoldiers = player2.$numberOfControlledSpaces;
-      console.log('player2 gets to hire now');
-    }
-
-    $('.rules').html('<h3>Rebuild Phase</h3><p>You gain 1 new pirate per space that you own. Add these mateys to any of your spaces. </p> <h3> You have ' + newSoldiers + ' seadogs available.</h3>');
-
-    console.log("new Soldiers = " + newSoldiers);
-
-    var $currentPlayer = $('.'+ game.currentPlayer);
-    // $('.new-space').removeClass('new-space');
-    $('.clicked-space').removeClass('clicked-space');
-    $('.space').off('click');
-    $('.button').off('click');
-    console.log(game.currentPlayer + " IS HIRING");
-    $currentPlayer.on('click',function(){
-      if(newSoldiers>0){
-        $(this).html('<h2>' + (parseInt($(this).text())+1) + '</h2>');
-        newSoldiers--;
-        console.log("new Soldiers = " + newSoldiers);
-            $('.rules').html('<h3>Rebuild Phase</h3><p>You gain 1 new pirate per space that you own. Add these mateys to any of your spaces. </p> <h3> You have ' + newSoldiers + ' seadogs available.</h3>');
-      }
+  init() {
+    // Single stable listener on the map — no per-space .on()/.off() needed
+    this.mapEl.addEventListener('click', e => {
+      const space = e.target.closest('.space');
+      if (space) this.handleSpaceClick(space);
     });
-    console.log("END OF HIRING");
-    $('.button').on('click', game.endOfRound);
-  },
-};
+
+    // Single stable button listener — reads currentPhase to decide what to do
+    this.buttonEl.addEventListener('click', () => {
+      if (this.currentPhase === 'attack') this.hirePhase();
+      else if (this.currentPhase === 'hire') this.endOfRound();
+    });
+
+    this.startAttackPhase();
+  }
+
+  // ── Turn management ────────────────────────────────────
+
+  startAttackPhase() {
+    this.currentPhase = 'attack';
+    this.hideDiceResult();
+    this.clearHighlights();
+    this.clickedIndex1 = -1;
+    this.clickedIndex2 = -1;
+
+    if (this.toggle) {
+      this.currentPlayer = 'player1';
+      this.otherPlayer   = 'player2';
+    } else {
+      this.currentPlayer = 'player2';
+      this.otherPlayer   = 'player1';
+    }
+
+    this.updateUI();
+    this.updateScores();
+  }
+
+  hirePhase() {
+    this.checkForWinner();
+    this.currentPhase = 'hire';
+    this.clearHighlights();
+
+    const controlled = document.querySelectorAll('.' + this.currentPlayer).length;
+    this.newSoldiers = controlled;
+
+    // Highlight all current player's spaces as clickable targets
+    document.querySelectorAll('.' + this.currentPlayer).forEach(el => {
+      el.classList.add('new-space');
+    });
+
+    document.querySelector('.turns').dataset.player = this.currentPlayer;
+    document.querySelector('#phase').textContent = 'Rebuild Phase';
+    document.querySelector('.rules').innerHTML =
+      `<h3>Rebuild Phase</h3><p>You gain 1 new pirate per space you own. Add these mateys to any of your spaces.</p><h3>You have ${this.newSoldiers} seadogs available.</h3>`;
+  }
+
+  endOfRound() {
+    this.clearHighlights();
+    this.toggle = !this.toggle;
+    this.gameRound += this.toggle ? 1 : 0; // increment at start of player1's turn
+    document.getElementById('round-counter').textContent = `Round ${this.gameRound}`;
+    this.startAttackPhase();
+  }
+
+  // ── Click routing ──────────────────────────────────────
+
+  handleSpaceClick(el) {
+    if (this.currentPhase === 'attack') {
+      this.handleAttackClick(el);
+    } else if (this.currentPhase === 'hire') {
+      this.handleHireClick(el);
+    }
+  }
+
+  handleAttackClick(el) {
+    if (this.clickedIndex1 === -1) {
+      // No space selected yet — try to select this one
+      if (!el.classList.contains(this.currentPlayer)) return;
+
+      const units = parseInt(el.textContent.trim(), 10);
+      if (units < 2) {
+        swal({
+          title: 'Not enough soldiers!',
+          text: 'You need at least 2 pirates to attack. Pick another island or end the phase.',
+          type: 'warning',
+          confirmButtonText: 'Aye aye!'
+        });
+        return;
+      }
+
+      // Select this space
+      this.clickedIndex1 = parseInt(el.id.replace('space-', ''), 10);
+      this.clickedUnits1 = units;
+      el.classList.add('clicked-space');
+
+      // Highlight valid attack targets
+      this.getAdjacentIndices(this.clickedIndex1).forEach(idx => {
+        const target = document.getElementById('space-' + idx);
+        if (target && !target.classList.contains(this.currentPlayer)) {
+          target.classList.add('new-space');
+        }
+      });
+
+    } else if (el.classList.contains('clicked-space')) {
+      // Clicked the already-selected space — deselect
+      this.clearHighlights();
+      this.clickedIndex1 = -1;
+
+    } else if (el.classList.contains('new-space')) {
+      // Clicked a valid target — attack!
+      this.clickedIndex2 = parseInt(el.id.replace('space-', ''), 10);
+      this.clickedUnits2 = parseInt(el.textContent.trim(), 10);
+      this.attackPhase();
+    }
+  }
+
+  handleHireClick(el) {
+    if (!el.classList.contains(this.currentPlayer)) return;
+    if (this.newSoldiers <= 0) return;
+
+    const current = parseInt(el.textContent.trim(), 10);
+    el.innerHTML = `<h2>${current + 1}</h2>`;
+    this.newSoldiers--;
+    document.querySelector('.rules').innerHTML =
+      `<h3>Rebuild Phase</h3><p>You gain 1 new pirate per space you own. Add these mateys to any of your spaces.</p><h3>You have ${this.newSoldiers} seadogs available.</h3>`;
+  }
+
+  // ── Combat ─────────────────────────────────────────────
+
+  attackPhase() {
+    this.clearHighlights();
+    if (this.clickedUnits2 === 0) {
+      this.claimLand();
+    } else {
+      this.rollDice();
+    }
+  }
+
+  rollDice() {
+    const roll = () => Math.ceil(Math.random() * 6);
+    const attackerRolls = Array.from({ length: this.clickedUnits1 }, roll);
+    const defenderRolls = Array.from({ length: this.clickedUnits2 }, roll);
+    const attackerTotal = attackerRolls.reduce((a, b) => a + b, 0);
+    const defenderTotal = defenderRolls.reduce((a, b) => a + b, 0);
+
+    // Show dice results in sidebar
+    document.getElementById('dice-attacker').textContent =
+      `Attacker: [${attackerRolls.join(', ')}] = ${attackerTotal}`;
+    document.getElementById('dice-defender').textContent =
+      `Defender: [${defenderRolls.join(', ')}] = ${defenderTotal}`;
+    const attackerWins = attackerTotal > defenderTotal;
+    document.getElementById('dice-outcome').textContent =
+      attackerWins ? 'Attacker wins!' : 'Defender holds!';
+    document.getElementById('dice-result').removeAttribute('hidden');
+
+    if (attackerWins) {
+      this.claimLand();
+    } else {
+      document.getElementById('space-' + this.clickedIndex1).innerHTML = '<h2>1</h2>';
+      this.clickedIndex1 = -1;
+      this.clickedIndex2 = -1;
+    }
+  }
+
+  claimLand() {
+    const movingUnits = Math.ceil(this.clickedUnits1 / 2);
+    const remainingUnits = this.clickedUnits1 - movingUnits;
+
+    const fromEl = document.getElementById('space-' + this.clickedIndex1);
+    const toEl   = document.getElementById('space-' + this.clickedIndex2);
+
+    toEl.classList.remove(this.otherPlayer);
+    toEl.classList.add(this.currentPlayer);
+    fromEl.innerHTML = `<h2>${remainingUnits}</h2>`;
+    toEl.innerHTML   = `<h2>${movingUnits}</h2>`;
+
+    this.clickedIndex1 = -1;
+    this.clickedIndex2 = -1;
+    this.updateScores();
+  }
+
+  // ── Win condition ──────────────────────────────────────
+
+  checkForWinner() {
+    const p1count = document.querySelectorAll('.player1').length;
+    const p2count = document.querySelectorAll('.player2').length;
+
+    let winner = null;
+    if (p1count === GRID_SIZE) winner = 'player1';
+    else if (p2count === GRID_SIZE) winner = 'player2';
+
+    if (winner) {
+      swal({
+        title: 'Victory!',
+        text: `Congratulations, ${this.players[winner].name}! You have conquered all the islands!`,
+        type: 'success',
+        confirmButtonText: 'Play Again'
+      }).then(() => {
+        location.reload();
+      });
+    }
+  }
+
+  // ── Grid helpers ───────────────────────────────────────
+
+  getAdjacentIndices(index) {
+    const row = Math.floor(index / COLS);
+    const col = index % COLS;
+    const adj = [];
+    if (row > 0)        adj.push(index - COLS); // up
+    if (row < COLS - 1) adj.push(index + COLS); // down
+    if (col > 0)        adj.push(index - 1);    // left
+    if (col < COLS - 1) adj.push(index + 1);    // right
+    return adj;
+  }
+
+  clearHighlights() {
+    document.querySelectorAll('.space').forEach(el => {
+      el.classList.remove('clicked-space', 'new-space');
+    });
+  }
+
+  hideDiceResult() {
+    document.getElementById('dice-result').setAttribute('hidden', '');
+  }
+
+  // ── UI updates ─────────────────────────────────────────
+
+  updateUI() {
+    const playerLabel = this.currentPlayer === 'player1' ? 'Player 1' : 'Player 2';
+    document.getElementById('player-turn').textContent = `${playerLabel}'s turn`;
+    document.getElementById('phase').textContent = 'Attack Phase';
+    document.querySelector('.turns').dataset.player = this.currentPlayer;
+    document.querySelector('.rules').innerHTML =
+      '<h3>Attack Phase</h3><p>Select any of your spaces with at least 2 pirates, then attack an adjacent space. When done, press \'End Phase\'.</p>';
+  }
+
+  updateScores() {
+    const p1 = document.querySelectorAll('.player1').length;
+    const p2 = document.querySelectorAll('.player2').length;
+    document.querySelector('.scores').innerHTML =
+      `<p>Player 1's islands: ${p1}</p><p>Player 2's islands: ${p2}</p>`;
+  }
+}
+
+const game = new Game();
+game.init();
+
+}); // DOMContentLoaded
