@@ -73,6 +73,11 @@ class Game {
     this.shape              = shape;       // 'square' | 'hex'
     this.botDiffs           = { ...diff }; // per-player difficulty map
     this.botActive          = true;       // set false on game reset to cancel pending timeouts
+
+    // Online multiplayer — all false/null in local mode
+    this.onlineMode  = false;
+    this.localPlayer = null;   // 'player1' | 'player2' | 'player3' | 'player4'
+    this.roomCode    = null;
     this.players = {
       player1: { name: 'Player 1' },
       player2: { name: 'Player 2' },
