@@ -280,6 +280,7 @@ class Game {
       document.getElementById('round-counter').textContent = `Round ${this.gameRound}`;
     }
     this.startAttackPhase();
+    this.syncOnline();
   }
 
   // ── Click routing ──────────────────────────────────────
@@ -343,6 +344,7 @@ class Game {
     this.newSoldiers--;
     document.querySelector('.rules').innerHTML =
       `<h3>Rebuild Phase</h3><p>You gain 1 new pirate per space you own. Add these mateys to any of your spaces.</p><h3>You have ${this.newSoldiers} seadogs available.</h3>`;
+    this.syncOnline();
   }
 
   // ── Combat ─────────────────────────────────────────────
@@ -379,6 +381,7 @@ class Game {
       document.getElementById('space-' + this.clickedIndex1).innerHTML = '<h2>1</h2>';
       this.clickedIndex1 = -1;
       this.clickedIndex2 = -1;
+      this.syncOnline();
     }
   }
 
@@ -398,6 +401,7 @@ class Game {
     this.clickedIndex2 = -1;
     this.updateScores();
     this.updateActivePlayers();
+    this.syncOnline();
   }
 
   // ── Player tracking ────────────────────────────────────
@@ -594,6 +598,12 @@ class Game {
   }
 
   // ── Online ─────────────────────────────────────────────
+
+  async syncOnline() {
+    if (!this.onlineMode) return;   // ← no-op for all local games
+    const { pushGameState, serializeState } = await import('./online.js');
+    await pushGameState(this.roomCode, serializeState(this));
+  }
 
   applyRemoteState(state) {
     // Rebuild every space from the serialized grid
