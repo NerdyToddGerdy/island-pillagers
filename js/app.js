@@ -75,13 +75,16 @@ class Game {
       this.mapEl.classList.add('hex-mode');
       this.mapEl.classList.remove('tri-mode');
 
-      // Heights divisible by 4 so h/4 row-offset is exact; widths fill 644px content area
-      const hexSizes = {
-        4: { w: 140, h: 160 },  // odd-row span: 140*4.5 = 630 < 644
-        5: { w: 114, h: 132 },  // odd-row span: 114*5.5 = 627 < 644
-        6: { w:  98, h: 112 },  // odd-row span:  98*6.5 = 637 < 644
-      };
-      const { w, h } = hexSizes[this.cols] || hexSizes[4];
+      // Dynamically size hexes to fill the actual rendered map width
+      const pad = parseInt(getComputedStyle(this.mapEl).paddingLeft, 10) || 28;
+      const contentW = this.mapEl.offsetWidth - 2 * pad;
+      // Width constraint: odd rows span w*(cols+0.5) ≤ contentW
+      const wByWidth  = Math.floor(contentW / (this.cols + 0.5));
+      // Height constraint: total height = h*(3*cols+1)/4 ≤ contentW (map is square)
+      // with h = w*1.155: w ≤ contentW*4 / (1.155*(3*cols+1))
+      const wByHeight = Math.floor(contentW * 4 / (1.155 * (3 * this.cols + 1)));
+      const w = Math.min(wByWidth, wByHeight);
+      const h = Math.round(w * 1.155 / 4) * 4;   // multiple of 4 for exact row-offset
       // gap=0: hexes must touch edge-to-edge for seamless honeycomb tiling
       this.mapEl.style.setProperty('--hex-w',          w + 'px');
       this.mapEl.style.setProperty('--hex-h',          h + 'px');
@@ -110,13 +113,15 @@ class Game {
       this.mapEl.classList.add('tri-mode');
       this.mapEl.classList.remove('hex-mode');
 
-      // Near-equilateral triangles sized to fill the 644px map content area
-      const triSizes = {
-        4: { w: 184, h: 160 },  // row-w: 184*2.5=460px, total-h: 160*4=640px
-        5: { w: 144, h: 124 },  // row-w: 144*3=432px,   total-h: 124*5=620px
-        6: { w: 120, h: 104 },  // row-w: 120*3.5=420px, total-h: 104*6=624px
-      };
-      const { w, h } = triSizes[this.cols] || triSizes[4];
+      // Dynamically size triangles to fill the actual rendered map width
+      const pad = parseInt(getComputedStyle(this.mapEl).paddingLeft, 10) || 28;
+      const contentW = this.mapEl.offsetWidth - 2 * pad;
+      // Width constraint: row_w = w*(cols+1)/2 ≤ contentW → w ≤ 2*contentW/(cols+1)
+      const wByWidth  = Math.floor(2 * contentW / (this.cols + 1));
+      // Height constraint: h*cols ≤ contentW, h = w*0.866 → w ≤ contentW/(0.866*cols)
+      const wByHeight = Math.floor(contentW / (0.866 * this.cols));
+      const w = Math.min(wByWidth, wByHeight);
+      const h = Math.round(w * 0.866);
       const rowW   = Math.round(w * (this.cols + 1) / 2);
       const totalH = h * this.cols;
 

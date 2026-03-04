@@ -19,8 +19,9 @@ h1 img{
   box-sizing: border-box;
   background: linear-gradient(145deg, #0096c7 0%, #0077b6 40%, #023e8a 100%);
   position:relative;
-  height: 700px;
+  max-width: 700px;
   width: 700px;
+  height: 700px;
   border-radius: 5%;
   display: grid;
   grid-template-columns: repeat(var(--grid-cols, 4), 1fr);
@@ -35,8 +36,10 @@ h1 img{
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 980px;
-  padding: 10px 0 30px;
+  max-width: 980px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px 30px;
 }
 
 .space {
@@ -415,10 +418,62 @@ h1 img{
 }
 
 .footer {
+  box-sizing: border-box;
+  width: 100%;
   padding: 10px 20px;
   font-size: 0.75em;
   color: rgba(255, 255, 255, 0.45);
 }
 .footer a {
   color: #4a9edd;
+}
+
+/* ── Responsive breakpoints ───────────────────── */
+@media (max-width: 960px) {
+  .map {
+    width: calc(100% - 254px);
+    height: auto;
+    aspect-ratio: 1;
+    margin: 10px 12px 20px 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .map {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    margin: 10px 0 16px 0;
+    padding: 16px;
+  }
+
+  .side-bar {
+    width: 100%;
+    flex: 0 0 100%;
+    margin: 0 0 20px 0;
+    border-radius: 10px;
+  }
+
+  #setup {
+    gap: 8px;
+    padding: 6px 8px;
+    font-size: 0.82em;
+  }
+
+  .size-btn, .bot-btn, .player-btn, .shape-btn {
+    padding: 5px 10px;
+    font-size: 0.8em;
+  }
+
+  .button { padding: 18px 12px; }
+  .rules  { min-height: 100px; }
+
+  H1 { font-size: 1.3em; }
+  h1 img { width: 56px; }
+}
+
+@media (max-width: 400px) {
+  #setup { font-size: 0.75em; gap: 6px; }
+  .size-btn, .bot-btn, .player-btn, .shape-btn { padding: 4px 8px; }
 }
