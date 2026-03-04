@@ -13,15 +13,13 @@
 
     <h1><img src="images/flag.png" alt="ARRGGG!!">  ISLAND PILLAGING</h1>
     <div id="setup">
-      <h2>Choose Map Size</h2>
-      <div class="size-buttons">
-        <button class="size-btn" data-cols="4">4 × 4</button>
-        <button class="size-btn" data-cols="5">5 × 5</button>
-        <button class="size-btn" data-cols="6">6 × 6</button>
-      </div>
+      <span>Map Size:</span>
+      <button class="size-btn active" data-cols="4">4 × 4</button>
+      <button class="size-btn" data-cols="5">5 × 5</button>
+      <button class="size-btn" data-cols="6">6 × 6</button>
     </div>
-    <div class="map" hidden></div>
-    <div class="side-bar" hidden>
+    <div class="map"></div>
+    <div class="side-bar">
       <div class="button">End Phase</div>
       <div class="turns">
         <div id="player-turn"></div>

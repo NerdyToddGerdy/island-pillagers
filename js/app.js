@@ -2,19 +2,23 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Size picker — shown before the game starts
-  document.querySelectorAll('.size-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const setupEl = document.getElementById('setup');
-      if (setupEl.hidden) return; // guard against rapid/double-clicks
-      const cols = parseInt(btn.dataset.cols, 10);
-      setupEl.hidden = true;
-      document.querySelector('.map').removeAttribute('hidden');
-      document.querySelector('.side-bar').removeAttribute('hidden');
-      const game = new Game(cols);
-      game.init();
+  function startGame(cols) {
+    // Update active button indicator
+    document.querySelectorAll('.size-btn').forEach(b => {
+      b.classList.toggle('active', parseInt(b.dataset.cols, 10) === cols);
     });
-  });
+
+    // Clone map and End Phase button to remove any stale event listeners
+    const mapEl = document.querySelector('.map');
+    const freshMap = mapEl.cloneNode(false);
+    mapEl.parentNode.replaceChild(freshMap, mapEl);
+
+    const btnEl = document.querySelector('.button');
+    const freshBtn = btnEl.cloneNode(true);
+    btnEl.parentNode.replaceChild(freshBtn, btnEl);
+
+    new Game(cols).init();
+  }
 
 class Game {
   constructor(cols = 4) {
@@ -310,5 +314,13 @@ class Game {
       `<p>Player 1's islands: ${p1}</p><p>Player 2's islands: ${p2}</p>`;
   }
 }
+
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      startGame(parseInt(btn.dataset.cols, 10));
+    });
+  });
+
+  startGame(4); // auto-start with default 4×4
 
 }); // DOMContentLoaded

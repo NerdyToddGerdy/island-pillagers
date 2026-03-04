@@ -175,40 +175,27 @@ h1 img{
 }
 
 #setup {
-  width: 700px;
-  height: 700px;
-  margin: 10px 20px 40px 0;
-  background: linear-gradient(145deg, #0096c7 0%, #0077b6 40%, #023e8a 100%);
-  border-radius: 5%;
+  flex: 0 0 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 32px;
-}
-
-#setup h2 {
+  gap: 12px;
+  padding: 8px 20px;
+  margin-bottom: 4px;
   color: #e8c97a;
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 1.6em;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-  margin: 0;
-}
-
-.size-buttons {
-  display: flex;
-  gap: 20px;
+  font-size: 0.9em;
 }
 
 .size-btn {
   font-family: 'IM Fell English SC', serif;
-  font-size: 1.3em;
-  padding: 18px 36px;
+  font-size: 0.85em;
+  padding: 6px 16px;
   background-color: #dfdac0;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  box-shadow: inset 0 0 12px 1px black;
+  box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
   color: #1a1a1a;
 }
 
@@ -219,6 +206,11 @@ h1 img{
 
 .size-btn:active {
   transform: translate(2px, 2px);
+}
+
+.size-btn.active {
+  background-color: darkgoldenrod;
+  color: #fff;
 }
 
 .footer {
