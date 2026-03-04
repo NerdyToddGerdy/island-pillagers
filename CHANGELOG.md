@@ -2,6 +2,13 @@
 
 All notable changes to Island Pillagers are documented here.
 
+## [1.0.3] - 2026-03-04
+
+### Changed
+- Setup strip grouped into labeled sections (Map Size, Players, Shape, Bots)
+- Bot difficulty controls laid out as per-player rows with color-coded labels
+- End Phase button upgraded: semantic `<button>` element, hover glow, phase-aware label (⚔ End Attack / ⚓ End Rebuild)
+
 ## [1.0.2] - 2026-03-04
 
 ### Changed
