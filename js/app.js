@@ -300,12 +300,7 @@ class Game {
 
       const units = parseInt(el.textContent.trim(), 10);
       if (units < 2) {
-        swal({
-          title: 'Not enough soldiers!',
-          text: 'You need at least 2 pirates to attack. Pick another island or end the phase.',
-          type: 'warning',
-          confirmButtonText: 'Aye aye!'
-        });
+        this.showWarning('Not enough soldiers! You need at least 2 pirates to attack.');
         return;
       }
 
@@ -585,6 +580,14 @@ class Game {
     document.querySelector('.turns').dataset.player = this.currentPlayer;
     document.querySelector('.rules').innerHTML =
       '<h3>Attack Phase</h3><p>Select any of your spaces with at least 2 pirates, then attack an adjacent space. When done, press \'End Phase\'.</p>';
+  }
+
+  showWarning(msg) {
+    const el = document.getElementById('warning');
+    el.textContent = msg;
+    el.removeAttribute('hidden');
+    clearTimeout(this._warningTimer);
+    this._warningTimer = setTimeout(() => el.setAttribute('hidden', ''), 2500);
   }
 
   updateScores() {

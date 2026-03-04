@@ -168,6 +168,23 @@ h1 img{
   padding: 10px 15px;
 }
 
+#warning {
+  width: 100%;
+  box-sizing: border-box;
+  background: url(../images/largeimage.jpg);
+  border-top: 2px solid rgba(180, 60, 40, 0.6);
+  text-align: center;
+  padding: 10px 15px;
+  color: #c0392b;
+  font-size: 0.9em;
+  animation: warning-fade-in 0.2s ease;
+}
+
+@keyframes warning-fade-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 #dice-result {
   width: 100%;
   box-sizing: border-box;
