@@ -219,19 +219,46 @@ h1 img{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  gap: 12px;
-  padding: 8px 20px;
+  gap: 8px;
+  padding: 10px 16px;
   margin-bottom: 4px;
-  color: #e8c97a;
-  font-size: 0.9em;
 }
 
-.size-btn {
+.setup-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(232, 201, 122, 0.2);
+  border-radius: 8px;
+  padding: 6px 10px 8px;
+}
+
+.setup-label {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 0.7em;
+  color: rgba(232, 201, 122, 0.65);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.setup-btns {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Shared button base — all four types consolidated */
+.size-btn, .player-btn, .shape-btn, .bot-btn {
   font-family: 'IM Fell English SC', serif;
   font-size: 0.85em;
-  padding: 6px 16px;
+  padding: 5px 14px;
   background-color: #dfdac0;
   border: none;
   border-radius: 6px;
@@ -239,87 +266,27 @@ h1 img{
   box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
   color: #1a1a1a;
 }
-
-.size-btn:hover {
+.size-btn:hover, .player-btn:hover, .shape-btn:hover, .bot-btn:hover {
   background-color: darkgoldenrod;
   color: #fff;
 }
-
-.size-btn:active {
+.size-btn:active, .player-btn:active, .shape-btn:active, .bot-btn:active {
   transform: translate(2px, 2px);
 }
-
-.size-btn.active {
+.size-btn.active, .player-btn.active, .shape-btn.active, .bot-btn.active {
   background-color: darkgoldenrod;
   color: #fff;
 }
 
-.bot-btn {
+.bot-player-label {
   font-family: 'IM Fell English SC', serif;
-  font-size: 0.85em;
-  padding: 6px 16px;
-  background-color: #dfdac0;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
-  color: #1a1a1a;
+  font-size: 0.8em;
+  color: rgba(232, 201, 122, 0.55);
+  padding: 0 2px 0 6px;
 }
-
-.bot-btn:hover {
-  background-color: darkgoldenrod;
-  color: #fff;
+.bot-player-label:first-child {
+  padding-left: 0;
 }
-
-.bot-btn:active {
-  transform: translate(2px, 2px);
-}
-
-.bot-btn.active {
-  background-color: darkgoldenrod;
-  color: #fff;
-}
-
-.player-btn {
-  font-family: 'IM Fell English SC', serif;
-  font-size: 0.85em;
-  padding: 6px 16px;
-  background-color: #dfdac0;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
-  color: #1a1a1a;
-}
-
-.player-btn:hover {
-  background-color: darkgoldenrod;
-  color: #fff;
-}
-
-.player-btn:active {
-  transform: translate(2px, 2px);
-}
-
-.player-btn.active {
-  background-color: darkgoldenrod;
-  color: #fff;
-}
-
-.shape-btn {
-  font-family: 'IM Fell English SC', serif;
-  font-size: 0.85em;
-  padding: 6px 16px;
-  background-color: #dfdac0;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
-  color: #1a1a1a;
-}
-.shape-btn:hover  { background-color: darkgoldenrod; color: #fff; }
-.shape-btn:active { transform: translate(2px, 2px); }
-.shape-btn.active { background-color: darkgoldenrod; color: #fff; }
 
 /* ── Hex map layout ───────────────────────────── */
 .map.hex-mode {
@@ -422,15 +389,6 @@ h1 img{
   z-index: 1;
 }
 
-.setup-divider {
-  color: rgba(232, 201, 122, 0.4);
-  margin: 0 4px;
-}
-
-.setup-break {
-  flex: 0 0 100%;
-  height: 0;
-}
 
 .p3-control {
   display: none;
@@ -588,13 +546,16 @@ h1 img{
   }
 
   #setup {
-    gap: 8px;
+    gap: 6px;
     padding: 6px 8px;
-    font-size: 0.82em;
+  }
+
+  .setup-group {
+    padding: 5px 8px 6px;
   }
 
   .size-btn, .bot-btn, .player-btn, .shape-btn {
-    padding: 5px 10px;
+    padding: 4px 10px;
     font-size: 0.8em;
   }
 
@@ -606,6 +567,7 @@ h1 img{
 }
 
 @media (max-width: 400px) {
-  #setup { font-size: 0.75em; gap: 6px; }
-  .size-btn, .bot-btn, .player-btn, .shape-btn { padding: 4px 8px; }
+  #setup { gap: 5px; }
+  .setup-group { padding: 4px 6px 5px; }
+  .size-btn, .bot-btn, .player-btn, .shape-btn { padding: 3px 7px; font-size: 0.75em; }
 }
