@@ -330,11 +330,10 @@ h1 img{
   transition: width 0.4s ease;
 }
 
-#seg-player1   { background: linear-gradient(90deg, #3a5260, #a0b4c0); }
-#seg-player2   { background: linear-gradient(90deg, #7a1a08, #e05530); }
-#seg-player3   { background: linear-gradient(90deg, #0e7490, #22d3ee); }
-#seg-player4   { background: linear-gradient(90deg, #581c87, #c084fc); }
-#seg-unclaimed { background: rgba(255, 255, 255, 0.12); }
+#seg-player1 { background: linear-gradient(90deg, #3a5260, #a0b4c0); }
+#seg-player2 { background: linear-gradient(90deg, #7a1a08, #e05530); }
+#seg-player3 { background: linear-gradient(90deg, #0e7490, #22d3ee); }
+#seg-player4 { background: linear-gradient(90deg, #581c87, #c084fc); }
 
 /* ── Hex map layout ───────────────────────────── */
 .map.hex-mode {

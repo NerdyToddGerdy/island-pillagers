@@ -2,6 +2,12 @@
 
 All notable changes to Island Pillagers are documented here.
 
+## [1.1.1] - 2026-03-04
+
+### Changed
+- Scores and score bar now based on total units owned, not island count
+- Removed unclaimed segment from score bar (units are always player-owned)
+
 ## [1.1.0] - 2026-03-04
 
 ### Added
