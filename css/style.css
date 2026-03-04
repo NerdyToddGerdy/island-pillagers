@@ -66,6 +66,14 @@ h1 img{
   background: radial-gradient(circle at 40% 35%, #e05530, #7a1a08);
   box-shadow: 0 0 0 3px rgba(224, 85, 48, 0.5), 5px 6px 18px rgba(0,0,0,0.55);
 }
+.player3 {
+  background: radial-gradient(circle at 40% 35%, #22d3ee, #0e7490);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.5), 5px 6px 18px rgba(0,0,0,0.55);
+}
+.player4 {
+  background: radial-gradient(circle at 40% 35%, #c084fc, #581c87);
+  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.5), 5px 6px 18px rgba(0,0,0,0.55);
+}
 
 .button {
   width: 100%;
@@ -105,6 +113,12 @@ h1 img{
 }
 .turns[data-player="player2"] {
   box-shadow: inset 0 0 0 10px #673131;
+}
+.turns[data-player="player3"] {
+  box-shadow: inset 0 0 0 10px #0e7490;
+}
+.turns[data-player="player4"] {
+  box-shadow: inset 0 0 0 10px #581c87;
 }
 
 #round-counter {
@@ -178,6 +192,7 @@ h1 img{
   flex: 0 0 100%;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 12px;
@@ -211,6 +226,142 @@ h1 img{
 .size-btn.active {
   background-color: darkgoldenrod;
   color: #fff;
+}
+
+.bot-btn {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 0.85em;
+  padding: 6px 16px;
+  background-color: #dfdac0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
+  color: #1a1a1a;
+}
+
+.bot-btn:hover {
+  background-color: darkgoldenrod;
+  color: #fff;
+}
+
+.bot-btn:active {
+  transform: translate(2px, 2px);
+}
+
+.bot-btn.active {
+  background-color: darkgoldenrod;
+  color: #fff;
+}
+
+.player-btn {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 0.85em;
+  padding: 6px 16px;
+  background-color: #dfdac0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
+  color: #1a1a1a;
+}
+
+.player-btn:hover {
+  background-color: darkgoldenrod;
+  color: #fff;
+}
+
+.player-btn:active {
+  transform: translate(2px, 2px);
+}
+
+.player-btn.active {
+  background-color: darkgoldenrod;
+  color: #fff;
+}
+
+.shape-btn {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 0.85em;
+  padding: 6px 16px;
+  background-color: #dfdac0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
+  color: #1a1a1a;
+}
+.shape-btn:hover  { background-color: darkgoldenrod; color: #fff; }
+.shape-btn:active { transform: translate(2px, 2px); }
+.shape-btn.active { background-color: darkgoldenrod; color: #fff; }
+
+/* ── Hex map layout ───────────────────────────── */
+.map.hex-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hex-grid-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hex-row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--hex-gap, 0px);
+  margin-bottom: var(--hex-row-offset, -30px);
+}
+
+.hex-row-odd {
+  margin-left: var(--hex-half-w, 68px);
+}
+
+.hex-mode .space {
+  flex: 0 0 auto;
+  width: var(--hex-w, 138px);
+  height: var(--hex-h, 159px);
+  aspect-ratio: unset;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border-radius: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+
+/* Inset box-shadow renders inside clip-path; z-index elevates over sibling hexes */
+.hex-mode .clicked-space {
+  box-shadow: inset 0 0 35px rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 0 10px white) drop-shadow(0 0 5px white);
+  z-index: 2;
+}
+.hex-row:has(.clicked-space) { z-index: 2; }
+
+.hex-mode .new-space {
+  border: none;
+  box-shadow: inset 0 0 28px rgba(255, 215, 0, 0.9);
+  filter: drop-shadow(0 0 8px gold) drop-shadow(0 0 4px gold);
+  z-index: 1;
+}
+.hex-row:has(.new-space) { z-index: 1; }
+
+.setup-divider {
+  color: rgba(232, 201, 122, 0.4);
+  margin: 0 4px;
+}
+
+.setup-break {
+  flex: 0 0 100%;
+  height: 0;
+}
+
+.p3-control {
+  display: none;
+}
+
+.p4-control {
+  display: none;
 }
 
 .footer {
