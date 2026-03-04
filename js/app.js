@@ -1,22 +1,29 @@
 'use strict';
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.2';
 
 const CHANGELOG = `
-  <div style="text-align:left; max-height:60vh; overflow-y:auto; padding:0 8px;">
-    <h3>v1.0.0 — 2026-03-04</h3>
-    <ul>
-      <li>Initial two-player pirate land-grabbing game</li>
-      <li>Dice-based combat with sweetalert2 modals</li>
-      <li>Configurable map size: 4×4, 5×5, 6×6</li>
-      <li>Three grid shapes: Square, Hexagon, Triangle</li>
-      <li>2–4 player support with elimination tracking</li>
-      <li>Bot opponent: Off / Easy / Medium / Hard</li>
-      <li>Round counter and dice result panel</li>
-      <li>Fully responsive layout</li>
-      <li>Pirate theme: ocean gradient, Cinzel Decorative font</li>
-    </ul>
-  </div>
+  <h3>v1.0.2 — 2026-03-04</h3>
+  <ul>
+    <li>Custom parchment-styled release notes modal (click version badge)</li>
+    <li>Version badge enlarged with gold border in footer</li>
+  </ul>
+  <h3>v1.0.1 — 2026-03-04</h3>
+  <ul>
+    <li>Inline warning replaces bottom-of-screen modal for attack errors</li>
+  </ul>
+  <h3>v1.0.0 — 2026-03-04</h3>
+  <ul>
+    <li>Initial two-player pirate land-grabbing game</li>
+    <li>Dice-based combat with win-condition modals</li>
+    <li>Configurable map size: 4×4, 5×5, 6×6</li>
+    <li>Three grid shapes: Square, Hexagon, Triangle</li>
+    <li>2–4 player support with elimination tracking</li>
+    <li>Bot opponent: Off / Easy / Medium / Hard</li>
+    <li>Round counter and dice result panel</li>
+    <li>Fully responsive layout</li>
+    <li>Pirate theme: ocean gradient, Cinzel Decorative font</li>
+  </ul>
 `;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -216,17 +223,19 @@ class Game {
       else if (this.currentPhase === 'hire') this.endOfRound();
     });
 
-    const versionEl = document.getElementById('version');
+    const versionEl  = document.getElementById('version');
+    const modalEl    = document.getElementById('changelog-modal');
+    const modalBody  = document.getElementById('changelog-body');
+    const modalClose = document.getElementById('changelog-close');
+
     versionEl.textContent = `v${VERSION}`;
-    versionEl.addEventListener('click', () => {
-      Swal.fire({
-        title: 'Release Notes',
-        html: CHANGELOG,
-        confirmButtonText: 'Close',
-        background: '#1a2f45',
-        color: '#dfdac0',
-      });
-    });
+
+    const openModal  = () => { modalBody.innerHTML = CHANGELOG; modalEl.removeAttribute('hidden'); };
+    const closeModal = () => modalEl.setAttribute('hidden', '');
+
+    versionEl.addEventListener('click', openModal);
+    modalClose.addEventListener('click', closeModal);
+    modalEl.addEventListener('click', e => { if (e.target === modalEl) closeModal(); });
 
     this.startAttackPhase();
   }

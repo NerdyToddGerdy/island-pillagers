@@ -172,17 +172,23 @@ h1 img{
   width: 100%;
   box-sizing: border-box;
   background: url(../images/largeimage.jpg);
-  border-top: 2px solid rgba(180, 60, 40, 0.6);
+  border: 2px solid rgba(120, 32, 32, 0.7);
   text-align: center;
   padding: 10px 15px;
-  color: #c0392b;
-  font-size: 0.9em;
-  animation: warning-fade-in 0.2s ease;
+  color: #7a2020;
+  font-size: 1.05em;
+  animation: warning-fade-in 0.2s ease,
+             warning-blink   0.4s ease 0.2s 5;
 }
 
 @keyframes warning-fade-in {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes warning-blink {
+  0%, 100% { border-color: rgba(120, 32, 32, 0.7); }
+  50%       { border-color: rgba(120, 32, 32, 0.05); }
 }
 
 #dice-result {
@@ -446,11 +452,112 @@ h1 img{
 }
 #version {
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.45);
+  display: inline-block;
+  font-size: 1rem;
+  color: rgba(232, 201, 122, 0.65);
+  border: 1px solid rgba(232, 201, 122, 0.3);
+  padding: 2px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+  transition: color 0.15s, border-color 0.15s;
 }
 #version:hover {
-  color: rgba(255, 255, 255, 0.65);
-  text-decoration: underline;
+  color: rgba(232, 201, 122, 0.95);
+  border-color: rgba(232, 201, 122, 0.65);
+  text-decoration: none;
+}
+
+/* ── Changelog modal ───────────────────────────────── */
+#changelog-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 15, 28, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: modal-backdrop-in 0.2s ease;
+}
+#changelog-modal[hidden] {
+  display: none;
+}
+#changelog-dialog {
+  position: relative;
+  width: min(460px, 92vw);
+  max-height: 80vh;
+  background: url(../images/largeimage.jpg);
+  border: 3px double rgba(139, 105, 20, 0.75);
+  border-radius: 4px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.75), inset 0 0 60px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modal-dialog-in 0.22s ease;
+}
+#changelog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 10px;
+  border-bottom: 2px solid rgba(139, 105, 20, 0.45);
+}
+#changelog-header h2 {
+  margin: 0;
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 1em;
+  color: #e8c97a;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.45);
+  letter-spacing: 0.05em;
+}
+#changelog-close {
+  background: none;
+  border: 1px solid rgba(139, 105, 20, 0.45);
+  color: #5c3d10;
+  font-family: 'IM Fell English SC', serif;
+  font-size: 0.95em;
+  width: 28px;
+  height: 28px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+#changelog-close:hover {
+  background: rgba(139, 105, 20, 0.25);
+}
+#changelog-body {
+  overflow-y: auto;
+  padding: 14px 20px 20px;
+  color: #2a1f0f;
+}
+#changelog-body h3 {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 0.8em;
+  color: #5c3d10;
+  margin: 14px 0 6px;
+  letter-spacing: 0.04em;
+}
+#changelog-body h3:first-child {
+  margin-top: 0;
+}
+#changelog-body ul {
+  margin: 0 0 4px;
+  padding-left: 18px;
+}
+#changelog-body li {
+  font-size: 0.88em;
+  line-height: 1.55;
+  margin-bottom: 2px;
+}
+@keyframes modal-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes modal-dialog-in {
+  from { opacity: 0; transform: scale(0.93) translateY(-10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
 }
 
 /* ── Responsive breakpoints ───────────────────── */
