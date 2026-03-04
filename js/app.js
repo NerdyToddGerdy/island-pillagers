@@ -593,6 +593,43 @@ class Game {
     }).join('');
   }
 
+  // ── Online ─────────────────────────────────────────────
+
+  applyRemoteState(state) {
+    // Rebuild every space from the serialized grid
+    document.querySelectorAll('.space').forEach((el, i) => {
+      const { owner, units } = state.grid[i];
+      el.className = 'space' + (owner ? ' ' + owner : '');
+      el.innerHTML = '<h2>' + units + '</h2>';
+    });
+
+    // Restore turn/phase variables
+    this.currentPlayerIndex = state.currentPlayerIndex;
+    this.currentPhase       = state.currentPhase;
+    this.gameRound          = state.gameRound;
+    this.activePlayers      = state.activePlayers;
+    this.clickedIndex1      = state.clickedIndex1;
+    this.clickedIndex2      = state.clickedIndex2;
+    this.newSoldiers        = state.newSoldiers;
+    this.currentPlayer      = this.activePlayers[this.currentPlayerIndex];
+
+    // Re-apply selection highlights
+    document.querySelectorAll('.clicked-space, .new-space')
+      .forEach(el => el.classList.remove('clicked-space', 'new-space'));
+    if (state.clickedIndex1 >= 0) {
+      document.getElementById('space-' + state.clickedIndex1)
+        ?.classList.add('clicked-space');
+      this.getAdjacentIndices(state.clickedIndex1).forEach(idx => {
+        const adj = document.getElementById('space-' + idx);
+        if (adj && !adj.classList.contains(this.currentPlayer))
+          adj.classList.add('new-space');
+      });
+    }
+
+    this.updateUI();
+    this.updateScores();
+  }
+
   // ── Bot ────────────────────────────────────────────────
 
   isBotTurn() {
