@@ -278,15 +278,30 @@ h1 img{
   color: #fff;
 }
 
+.bot-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bot-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
 .bot-player-label {
   font-family: 'IM Fell English SC', serif;
   font-size: 0.8em;
-  color: rgba(232, 201, 122, 0.55);
-  padding: 0 2px 0 6px;
+  font-weight: bold;
+  width: 22px;
+  text-align: right;
+  flex-shrink: 0;
 }
-.bot-player-label:first-child {
-  padding-left: 0;
-}
+.bot-p2 { color: #8a5050; }
+.bot-p3 { color: #3d7a4a; }
+.bot-p4 { color: #6b4a8a; }
 
 /* ── Hex map layout ───────────────────────────── */
 .map.hex-mode {

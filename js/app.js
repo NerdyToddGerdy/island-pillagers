@@ -800,9 +800,9 @@ class Game {
 
   function updateBotControlVisibility(numPlayers) {
     document.querySelectorAll('.p3-control').forEach(el =>
-      el.style.display = numPlayers >= 3 ? 'inline-block' : 'none');
+      el.style.display = numPlayers >= 3 ? 'flex' : 'none');
     document.querySelectorAll('.p4-control').forEach(el =>
-      el.style.display = numPlayers >= 4 ? 'inline-block' : 'none');
+      el.style.display = numPlayers >= 4 ? 'flex' : 'none');
   }
 
   document.querySelectorAll('.player-btn').forEach(btn => {
