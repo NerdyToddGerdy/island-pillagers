@@ -73,6 +73,7 @@ class Game {
 
     if (this.shape === 'hex') {
       this.mapEl.classList.add('hex-mode');
+      this.mapEl.classList.remove('tri-mode');
 
       // Heights divisible by 4 so h/4 row-offset is exact; widths fill 644px content area
       const hexSizes = {
@@ -104,8 +105,48 @@ class Game {
         wrapper.appendChild(rowDiv);
       }
       this.mapEl.appendChild(wrapper);
-    } else {
+
+    } else if (this.shape === 'triangle') {
+      this.mapEl.classList.add('tri-mode');
       this.mapEl.classList.remove('hex-mode');
+
+      // Near-equilateral triangles sized to fill the 644px map content area
+      const triSizes = {
+        4: { w: 184, h: 160 },  // row-w: 184*2.5=460px, total-h: 160*4=640px
+        5: { w: 144, h: 124 },  // row-w: 144*3=432px,   total-h: 124*5=620px
+        6: { w: 120, h: 104 },  // row-w: 120*3.5=420px, total-h: 104*6=624px
+      };
+      const { w, h } = triSizes[this.cols] || triSizes[4];
+      const rowW   = Math.round(w * (this.cols + 1) / 2);
+      const totalH = h * this.cols;
+
+      this.mapEl.style.setProperty('--tri-w',       w + 'px');
+      this.mapEl.style.setProperty('--tri-h',       h + 'px');
+      this.mapEl.style.setProperty('--tri-row-w',   rowW + 'px');
+      this.mapEl.style.setProperty('--tri-total-h', totalH + 'px');
+      this.triW = w;
+      this.triH = h;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'tri-grid-wrapper';
+
+      for (let r = 0; r < this.cols; r++) {
+        for (let c = 0; c < this.cols; c++) {
+          const orientation = (r + c) % 2 === 0 ? 'up' : 'down';
+          const div = document.createElement('div');
+          div.className = 'space';
+          div.id = `space-${r * this.cols + c}`;
+          div.dataset.orientation = orientation;
+          div.style.left = (c * w / 2) + 'px';
+          div.style.top  = (r * h) + 'px';
+          div.innerHTML = '<h2>0</h2>';
+          wrapper.appendChild(div);
+        }
+      }
+      this.mapEl.appendChild(wrapper);
+
+    } else {
+      this.mapEl.classList.remove('hex-mode', 'tri-mode');
       this.mapEl.style.setProperty('--grid-cols', this.cols);
 
       for (let i = 0; i < this.gridSize; i++) {
@@ -131,6 +172,11 @@ class Game {
 
     // Single stable listener on the map — no per-space .on()/.off() needed
     this.mapEl.addEventListener('click', e => {
+      if (this.shape === 'triangle') {
+        const space = this.getTriangleCellFromClick(e);
+        if (space) this.handleSpaceClick(space);
+        return;
+      }
       const space = e.target.closest('.space');
       if (space) this.handleSpaceClick(space);
     });
@@ -346,9 +392,9 @@ class Game {
   // ── Grid helpers ───────────────────────────────────────
 
   getAdjacentIndices(index) {
-    return this.shape === 'hex'
-      ? this.getHexAdjacentIndices(index)
-      : this.getSquareAdjacentIndices(index);
+    if (this.shape === 'hex')      return this.getHexAdjacentIndices(index);
+    if (this.shape === 'triangle') return this.getTriangleAdjacentIndices(index);
+    return this.getSquareAdjacentIndices(index);
   }
 
   getSquareAdjacentIndices(index) {
@@ -395,6 +441,84 @@ class Game {
     }
 
     return adj;
+  }
+
+  getTriangleAdjacentIndices(index) {
+    const r = Math.floor(index / this.cols);
+    const c = index % this.cols;
+    const adj = [];
+    const isUp = (r + c) % 2 === 0;
+
+    // All triangles share left and right neighbors within the same row
+    if (c > 0)              adj.push(r * this.cols + c - 1);
+    if (c < this.cols - 1)  adj.push(r * this.cols + c + 1);
+
+    // UP triangles share their base with the cell directly below;
+    // DOWN triangles share their base with the cell directly above.
+    if (isUp) {
+      if (r < this.cols - 1) adj.push((r + 1) * this.cols + c);
+    } else {
+      if (r > 0)             adj.push((r - 1) * this.cols + c);
+    }
+
+    return adj;
+  }
+
+  // Returns the .space element whose triangle polygon contains the click point.
+  // Needed because triangle bounding boxes overlap by W/2.
+  getTriangleCellFromClick(e) {
+    const wrapper = this.mapEl.querySelector('.tri-grid-wrapper');
+    if (!wrapper) return null;
+    const rect = wrapper.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    const W = this.triW;
+    const H = this.triH;
+
+    // Estimate row and a range of columns to check around the click point
+    const rEst = Math.floor(py / H);
+    const cEst = Math.floor(px / (W / 2));
+
+    for (let dr = -1; dr <= 1; dr++) {
+      const r = rEst + dr;
+      if (r < 0 || r >= this.cols) continue;
+      for (let dc = -2; dc <= 2; dc++) {
+        const c = cEst + dc;
+        if (c < 0 || c >= this.cols) continue;
+        const el = document.getElementById(`space-${r * this.cols + c}`);
+        if (!el) continue;
+
+        const left = c * (W / 2);
+        const top  = r * H;
+        const isUp = (r + c) % 2 === 0;
+        let hit;
+        if (isUp) {
+          // Apex at top-center, base at bottom
+          hit = this.pointInTriangle(px, py,
+            left + W / 2, top,
+            left,         top + H,
+            left + W,     top + H);
+        } else {
+          // Base at top, apex at bottom-center
+          hit = this.pointInTriangle(px, py,
+            left,         top,
+            left + W,     top,
+            left + W / 2, top + H);
+        }
+        if (hit) return el;
+      }
+    }
+    return null;
+  }
+
+  // Cross-product sign test — true if (px,py) is inside triangle (x0,y0),(x1,y1),(x2,y2)
+  pointInTriangle(px, py, x0, y0, x1, y1, x2, y2) {
+    const d1 = (px - x1) * (y0 - y1) - (x0 - x1) * (py - y1);
+    const d2 = (px - x2) * (y1 - y2) - (x1 - x2) * (py - y2);
+    const d3 = (px - x0) * (y2 - y0) - (x2 - x0) * (py - y0);
+    const hasNeg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    const hasPos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+    return !(hasNeg && hasPos);
   }
 
   clearHighlights() {
