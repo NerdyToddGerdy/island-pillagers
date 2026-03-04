@@ -2,6 +2,13 @@
 
 All notable changes to Island Pillagers are documented here.
 
+## [1.1.0] - 2026-03-04
+
+### Added
+- Proportional island score bar spanning the full game width
+- Bar segments colored per player (matching island colors) plus an unclaimed segment
+- Segments animate smoothly on width changes; unused player slots hidden automatically
+
 ## [1.0.3] - 2026-03-04
 
 ### Changed

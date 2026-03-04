@@ -1,8 +1,13 @@
 'use strict';
 
-const VERSION = '1.0.3';
+const VERSION = '1.1.0';
 
 const CHANGELOG = `
+  <h3>v1.1.0 — 2026-03-04</h3>
+  <ul>
+    <li>Proportional island score bar below the setup strip</li>
+    <li>Bar updates live: player segments + unclaimed territory, supports 2–4 players</li>
+  </ul>
   <h3>v1.0.3 — 2026-03-04</h3>
   <ul>
     <li>Setup strip grouped into labeled sections (Map Size, Players, Shape, Bots)</li>
@@ -615,6 +620,25 @@ class Game {
         ? `<p>${label}: <em>eliminated</em></p>`
         : `<p>${label}: ${count} island${count !== 1 ? 's' : ''}</p>`;
     }).join('');
+
+    // Score bar — proportional segments per player + unclaimed
+    const total = this.gridSize;
+    let claimed = 0;
+
+    ['player1', 'player2', 'player3', 'player4'].forEach(pk => {
+      const seg = document.getElementById('seg-' + pk);
+      if (!this.playerKeys.includes(pk)) {
+        seg.style.display = 'none';
+        return;
+      }
+      seg.style.display = '';
+      const count = document.querySelectorAll('.' + pk).length;
+      claimed += count;
+      seg.style.width = (count / total * 100).toFixed(2) + '%';
+    });
+
+    document.getElementById('seg-unclaimed').style.width =
+      ((total - claimed) / total * 100).toFixed(2) + '%';
   }
 
   // ── Online ─────────────────────────────────────────────
