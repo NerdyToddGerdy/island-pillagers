@@ -275,6 +275,7 @@ class Game {
     document.querySelector('#phase').textContent = 'Rebuild Phase';
     document.querySelector('.rules').innerHTML =
       `<h3>Rebuild Phase</h3><p>You gain 1 new pirate per space you own. Add these mateys to any of your spaces.</p><h3>You have ${this.newSoldiers} seadogs available.</h3>`;
+    document.getElementById('end-phase-btn').textContent = '⚓ End Rebuild';
 
     if (this.isBotTurn()) {
       setTimeout(() => this.botHirePhase(), BOT_HIRE_DELAY);
@@ -588,7 +589,8 @@ class Game {
     document.getElementById('phase').textContent = 'Attack Phase';
     document.querySelector('.turns').dataset.player = this.currentPlayer;
     document.querySelector('.rules').innerHTML =
-      '<h3>Attack Phase</h3><p>Select any of your spaces with at least 2 pirates, then attack an adjacent space. When done, press \'End Phase\'.</p>';
+      '<h3>Attack Phase</h3><p>Select any of your spaces with at least 2 pirates, then attack an adjacent space. When done, press \'End Attack\'.</p>';
+    document.getElementById('end-phase-btn').textContent = '⚔ End Attack';
   }
 
   showWarning(msg) {

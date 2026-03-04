@@ -85,11 +85,19 @@ h1 img{
   border: none;
   border-bottom: 3px solid black;
   text-align: center;
-  padding: 28px 15px;
+  padding: 22px 15px;
   cursor: pointer;
   background-color: #dfdac0;
-  box-shadow: inset 0 0 18px 1px black;
-  font-size: 1.1em;
+  box-shadow: inset 0 0 24px 2px rgba(0, 0, 0, 0.65);
+  font-family: 'IM Fell English SC', serif;
+  font-size: 1.15em;
+  letter-spacing: 0.04em;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+.button:hover {
+  background-color: #e8e2c8;
+  box-shadow: inset 0 0 24px 2px rgba(0, 0, 0, 0.5),
+              0 0 12px rgba(184, 134, 11, 0.35);
 }
 .clicked-space{
   box-shadow: 0 0 0 3px white, 0 0 20px rgba(255, 255, 255, 0.6),
@@ -143,9 +151,11 @@ h1 img{
   overflow: hidden;
 }
 
-.button:active{
+.button:active {
   background-color: darkgoldenrod;
-  transform: translate(4px,4px);
+  color: #fff;
+  transform: translateY(3px);
+  box-shadow: inset 0 0 18px 2px rgba(0, 0, 0, 0.5);
 }
 
 .scores{
