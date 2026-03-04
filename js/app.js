@@ -1,5 +1,24 @@
 'use strict';
 
+const VERSION = '1.0.0';
+
+const CHANGELOG = `
+  <div style="text-align:left; max-height:60vh; overflow-y:auto; padding:0 8px;">
+    <h3>v1.0.0 — 2026-03-04</h3>
+    <ul>
+      <li>Initial two-player pirate land-grabbing game</li>
+      <li>Dice-based combat with sweetalert2 modals</li>
+      <li>Configurable map size: 4×4, 5×5, 6×6</li>
+      <li>Three grid shapes: Square, Hexagon, Triangle</li>
+      <li>2–4 player support with elimination tracking</li>
+      <li>Bot opponent: Off / Easy / Medium / Hard</li>
+      <li>Round counter and dice result panel</li>
+      <li>Fully responsive layout</li>
+      <li>Pirate theme: ocean gradient, Cinzel Decorative font</li>
+    </ul>
+  </div>
+`;
+
 document.addEventListener('DOMContentLoaded', () => {
 
   const BOT_DELAY      = 700;  // ms between bot attack moves
@@ -190,6 +209,18 @@ class Game {
     this.buttonEl.addEventListener('click', () => {
       if (this.currentPhase === 'attack') this.hirePhase();
       else if (this.currentPhase === 'hire') this.endOfRound();
+    });
+
+    const versionEl = document.getElementById('version');
+    versionEl.textContent = `v${VERSION}`;
+    versionEl.addEventListener('click', () => {
+      Swal.fire({
+        title: 'Release Notes',
+        html: CHANGELOG,
+        confirmButtonText: 'Close',
+        background: '#1a2f45',
+        color: '#dfdac0',
+      });
     });
 
     this.startAttackPhase();

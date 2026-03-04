@@ -427,6 +427,14 @@ h1 img{
 .footer a {
   color: #4a9edd;
 }
+#version {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.45);
+}
+#version:hover {
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: underline;
+}
 
 /* ── Responsive breakpoints ───────────────────── */
 @media (max-width: 960px) {
