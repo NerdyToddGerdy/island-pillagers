@@ -12,25 +12,16 @@
   <div class="container">
 
     <h1><img src="images/flag.png" alt="ARRGGG!!">  ISLAND PILLAGING</h1>
-    <div class="map">
-      <div class="space player1" id="space-0"><h2>2</h2></div>
-      <div class="space" id="space-1"><h2>0</h2></div>
-      <div class="space" id="space-2"><h2>0</h2></div>
-      <div class="space" id="space-3"><h2>0</h2></div>
-      <div class="space" id="space-4"><h2>0</h2></div>
-      <div class="space" id="space-5"><h2>0</h2></div>
-      <div class="space" id="space-6"><h2>0</h2></div>
-      <div class="space" id="space-7"><h2>0</h2></div>
-      <div class="space" id="space-8"><h2>0</h2></div>
-      <div class="space" id="space-9"><h2>0</h2></div>
-      <div class="space" id="space-10"><h2>0</h2></div>
-      <div class="space" id="space-11"><h2>0</h2></div>
-      <div class="space" id="space-12"><h2>0</h2></div>
-      <div class="space" id="space-13"><h2>0</h2></div>
-      <div class="space" id="space-14"><h2>0</h2></div>
-      <div class="space player2" id="space-15"><h2>2</h2></div>
+    <div id="setup">
+      <h2>Choose Map Size</h2>
+      <div class="size-buttons">
+        <button class="size-btn" data-cols="4">4 × 4</button>
+        <button class="size-btn" data-cols="5">5 × 5</button>
+        <button class="size-btn" data-cols="6">6 × 6</button>
+      </div>
     </div>
-    <div class="side-bar">
+    <div class="map" hidden></div>
+    <div class="side-bar" hidden>
       <div class="button">End Phase</div>
       <div class="turns">
         <div id="player-turn"></div>

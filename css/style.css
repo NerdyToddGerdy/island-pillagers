@@ -22,10 +22,10 @@ h1 img{
   height: 700px;
   width: 700px;
   border-radius: 5%;
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 4), 1fr);
+  gap: 12px;
+  align-content: center;
   margin: 10px 20px 40px 0;
   overflow: hidden;
 }
@@ -40,9 +40,10 @@ h1 img{
 }
 
 .space {
-  line-height: 700%;
-  height: 23%;
-  width: 23%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: radial-gradient(circle at 40% 35%, #3ecf7a, #1a6e3a);
   border-radius: 20%;
   box-shadow: 0 0 0 3px rgba(210, 180, 120, 0.5),
@@ -171,6 +172,53 @@ h1 img{
   font-weight: bold;
   margin-top: 6px;
   color: gold;
+}
+
+#setup {
+  width: 700px;
+  height: 700px;
+  margin: 10px 20px 40px 0;
+  background: linear-gradient(145deg, #0096c7 0%, #0077b6 40%, #023e8a 100%);
+  border-radius: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+#setup h2 {
+  color: #e8c97a;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.6em;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+  margin: 0;
+}
+
+.size-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.size-btn {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 1.3em;
+  padding: 18px 36px;
+  background-color: #dfdac0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: inset 0 0 12px 1px black;
+  color: #1a1a1a;
+}
+
+.size-btn:hover {
+  background-color: darkgoldenrod;
+  color: #fff;
+}
+
+.size-btn:active {
+  transform: translate(2px, 2px);
 }
 
 .footer {

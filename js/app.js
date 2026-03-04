@@ -2,11 +2,24 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-const GRID_SIZE = 16;
-const COLS = 4;
+  // Size picker — shown before the game starts
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const setupEl = document.getElementById('setup');
+      if (setupEl.hidden) return; // guard against rapid/double-clicks
+      const cols = parseInt(btn.dataset.cols, 10);
+      setupEl.hidden = true;
+      document.querySelector('.map').removeAttribute('hidden');
+      document.querySelector('.side-bar').removeAttribute('hidden');
+      const game = new Game(cols);
+      game.init();
+    });
+  });
 
 class Game {
-  constructor() {
+  constructor(cols = 4) {
+    this.cols      = cols;
+    this.gridSize  = cols * cols;
     this.toggle        = true;       // true = player1's turn
     this.currentPlayer = 'player1';
     this.otherPlayer   = 'player2';
@@ -29,7 +42,31 @@ class Game {
 
   // ── Bootstrap ──────────────────────────────────────────
 
+  buildGrid() {
+    this.mapEl.style.setProperty('--grid-cols', this.cols);
+    this.mapEl.innerHTML = '';
+
+    for (let i = 0; i < this.gridSize; i++) {
+      const div = document.createElement('div');
+      div.className = 'space';
+      div.id = `space-${i}`;
+      div.innerHTML = '<h2>0</h2>';
+      this.mapEl.appendChild(div);
+    }
+
+    // Place starting units at opposite corners
+    const p1El = document.getElementById('space-0');
+    p1El.classList.add('player1');
+    p1El.innerHTML = '<h2>2</h2>';
+
+    const p2El = document.getElementById(`space-${this.gridSize - 1}`);
+    p2El.classList.add('player2');
+    p2El.innerHTML = '<h2>2</h2>';
+  }
+
   init() {
+    this.buildGrid();
+
     // Single stable listener on the map — no per-space .on()/.off() needed
     this.mapEl.addEventListener('click', e => {
       const space = e.target.closest('.space');
@@ -217,8 +254,8 @@ class Game {
     const p2count = document.querySelectorAll('.player2').length;
 
     let winner = null;
-    if (p1count === GRID_SIZE) winner = 'player1';
-    else if (p2count === GRID_SIZE) winner = 'player2';
+    if (p1count === this.gridSize) winner = 'player1';
+    else if (p2count === this.gridSize) winner = 'player2';
 
     if (winner) {
       swal({
@@ -235,13 +272,13 @@ class Game {
   // ── Grid helpers ───────────────────────────────────────
 
   getAdjacentIndices(index) {
-    const row = Math.floor(index / COLS);
-    const col = index % COLS;
+    const row = Math.floor(index / this.cols);
+    const col = index % this.cols;
     const adj = [];
-    if (row > 0)        adj.push(index - COLS); // up
-    if (row < COLS - 1) adj.push(index + COLS); // down
-    if (col > 0)        adj.push(index - 1);    // left
-    if (col < COLS - 1) adj.push(index + 1);    // right
+    if (row > 0)              adj.push(index - this.cols); // up
+    if (row < this.cols - 1)  adj.push(index + this.cols); // down
+    if (col > 0)              adj.push(index - 1);          // left
+    if (col < this.cols - 1)  adj.push(index + 1);          // right
     return adj;
   }
 
@@ -273,8 +310,5 @@ class Game {
       `<p>Player 1's islands: ${p1}</p><p>Player 2's islands: ${p2}</p>`;
   }
 }
-
-const game = new Game();
-game.init();
 
 }); // DOMContentLoaded
