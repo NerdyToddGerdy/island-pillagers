@@ -1,8 +1,14 @@
 'use strict';
 
-const VERSION = '1.0.2';
+const VERSION = '1.0.3';
 
 const CHANGELOG = `
+  <h3>v1.0.3 — 2026-03-04</h3>
+  <ul>
+    <li>Setup strip grouped into labeled sections (Map Size, Players, Shape, Bots)</li>
+    <li>Bot difficulty controls laid out as per-player rows with color-coded labels</li>
+    <li>End Phase button upgraded: semantic element, hover glow, phase-aware label</li>
+  </ul>
   <h3>v1.0.2 — 2026-03-04</h3>
   <ul>
     <li>Custom parchment-styled release notes modal (click version badge)</li>
@@ -275,6 +281,7 @@ class Game {
     document.querySelector('#phase').textContent = 'Rebuild Phase';
     document.querySelector('.rules').innerHTML =
       `<h3>Rebuild Phase</h3><p>You gain 1 new pirate per space you own. Add these mateys to any of your spaces.</p><h3>You have ${this.newSoldiers} seadogs available.</h3>`;
+    document.getElementById('end-phase-btn').textContent = '⚓ End Rebuild';
 
     if (this.isBotTurn()) {
       setTimeout(() => this.botHirePhase(), BOT_HIRE_DELAY);
@@ -588,7 +595,8 @@ class Game {
     document.getElementById('phase').textContent = 'Attack Phase';
     document.querySelector('.turns').dataset.player = this.currentPlayer;
     document.querySelector('.rules').innerHTML =
-      '<h3>Attack Phase</h3><p>Select any of your spaces with at least 2 pirates, then attack an adjacent space. When done, press \'End Phase\'.</p>';
+      '<h3>Attack Phase</h3><p>Select any of your spaces with at least 2 pirates, then attack an adjacent space. When done, press \'End Attack\'.</p>';
+    document.getElementById('end-phase-btn').textContent = '⚔ End Attack';
   }
 
   showWarning(msg) {
