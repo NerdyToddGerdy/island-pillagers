@@ -1,8 +1,12 @@
 'use strict';
 
-const VERSION = '1.1.0';
+const VERSION = '1.1.1';
 
 const CHANGELOG = `
+  <h3>v1.1.1 — 2026-03-04</h3>
+  <ul>
+    <li>Scores and score bar now based on total units, not island count</li>
+  </ul>
   <h3>v1.1.0 — 2026-03-04</h3>
   <ul>
     <li>Proportional island score bar below the setup strip</li>
@@ -613,32 +617,33 @@ class Game {
   }
 
   updateScores() {
+    const unitCount = pk => Array.from(document.querySelectorAll('.' + pk))
+      .reduce((sum, el) => {
+        const n = parseInt(el.querySelector('h2')?.textContent.trim(), 10);
+        return sum + (isNaN(n) ? 0 : n);
+      }, 0);
+
+    const playerUnits = Object.fromEntries(this.playerKeys.map(pk => [pk, unitCount(pk)]));
+    const totalUnits  = Object.values(playerUnits).reduce((a, b) => a + b, 0);
+
+    // Text scores
     document.querySelector('.scores').innerHTML = this.playerKeys.map(pk => {
-      const count = document.querySelectorAll('.' + pk).length;
+      const units = playerUnits[pk];
       const label = this.players[pk].name;
-      return count === 0
+      return units === 0
         ? `<p>${label}: <em>eliminated</em></p>`
-        : `<p>${label}: ${count} island${count !== 1 ? 's' : ''}</p>`;
+        : `<p>${label}: ${units} unit${units !== 1 ? 's' : ''}</p>`;
     }).join('');
 
-    // Score bar — proportional segments per player + unclaimed
-    const total = this.gridSize;
-    let claimed = 0;
-
+    // Score bar — proportional by units owned
     ['player1', 'player2', 'player3', 'player4'].forEach(pk => {
       const seg = document.getElementById('seg-' + pk);
-      if (!this.playerKeys.includes(pk)) {
-        seg.style.display = 'none';
-        return;
-      }
+      if (!this.playerKeys.includes(pk)) { seg.style.display = 'none'; return; }
       seg.style.display = '';
-      const count = document.querySelectorAll('.' + pk).length;
-      claimed += count;
-      seg.style.width = (count / total * 100).toFixed(2) + '%';
+      seg.style.width = totalUnits > 0
+        ? (playerUnits[pk] / totalUnits * 100).toFixed(2) + '%'
+        : (100 / this.playerKeys.length).toFixed(2) + '%';
     });
-
-    document.getElementById('seg-unclaimed').style.width =
-      ((total - claimed) / total * 100).toFixed(2) + '%';
   }
 
   // ── Online ─────────────────────────────────────────────
