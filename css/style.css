@@ -264,8 +264,8 @@ h1 img{
   gap: 5px;
 }
 
-/* Shared button base — all four types consolidated */
-.size-btn, .player-btn, .shape-btn, .bot-btn {
+/* Shared button base — all five types consolidated */
+.size-btn, .player-btn, .shape-btn, .island-btn, .bot-btn {
   font-family: 'IM Fell English SC', serif;
   font-size: 0.85em;
   padding: 5px 14px;
@@ -276,14 +276,14 @@ h1 img{
   box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
   color: #1a1a1a;
 }
-.size-btn:hover, .player-btn:hover, .shape-btn:hover, .bot-btn:hover {
+.size-btn:hover, .player-btn:hover, .shape-btn:hover, .island-btn:hover, .bot-btn:hover {
   background-color: darkgoldenrod;
   color: #fff;
 }
-.size-btn:active, .player-btn:active, .shape-btn:active, .bot-btn:active {
+.size-btn:active, .player-btn:active, .shape-btn:active, .island-btn:active, .bot-btn:active {
   transform: translate(2px, 2px);
 }
-.size-btn.active, .player-btn.active, .shape-btn.active, .bot-btn.active {
+.size-btn.active, .player-btn.active, .shape-btn.active, .island-btn.active, .bot-btn.active {
   background-color: darkgoldenrod;
   color: #fff;
 }
@@ -601,7 +601,7 @@ h1 img{
     padding: 5px 8px 6px;
   }
 
-  .size-btn, .bot-btn, .player-btn, .shape-btn {
+  .size-btn, .bot-btn, .player-btn, .shape-btn, .island-btn {
     padding: 4px 10px;
     font-size: 0.8em;
   }
@@ -616,5 +616,5 @@ h1 img{
 @media (max-width: 400px) {
   #setup { gap: 5px; }
   .setup-group { padding: 4px 6px 5px; }
-  .size-btn, .bot-btn, .player-btn, .shape-btn { padding: 3px 7px; font-size: 0.75em; }
+  .size-btn, .bot-btn, .player-btn, .shape-btn, .island-btn { padding: 3px 7px; font-size: 0.75em; }
 }
