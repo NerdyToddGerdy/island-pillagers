@@ -1,8 +1,12 @@
 'use strict';
 
-const VERSION = '1.1.1';
+const VERSION = '1.2.0';
 
 const CHANGELOG = `
+  <h3>v1.2.0 — 2026-03-05</h3>
+  <ul>
+    <li>Fortified Islands mode: unclaimed spaces start with 1–6 random defenders</li>
+  </ul>
   <h3>v1.1.1 — 2026-03-04</h3>
   <ul>
     <li>Scores and score bar now based on total units, not island count</li>
@@ -50,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentBotDiffs   = { player2: 'off', player3: 'off', player4: 'off' };
   let currentNumPlayers = 2;
   let currentShape      = 'square';
+  let currentIslandMode = 'open';
   let activeGame        = null;
 
   function startGame(cols) {
@@ -72,12 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const freshBtn = btnEl.cloneNode(true);
     btnEl.parentNode.replaceChild(freshBtn, btnEl);
 
-    activeGame = new Game(cols, currentBotDiffs, currentNumPlayers, currentShape);
+    activeGame = new Game(cols, currentBotDiffs, currentNumPlayers, currentShape, currentIslandMode);
     activeGame.init();
   }
 
 class Game {
-  constructor(cols = 4, diff = {}, numPlayers = 2, shape = 'square') {
+  constructor(cols = 4, diff = {}, numPlayers = 2, shape = 'square', islandMode = 'open') {
     this.cols      = cols;
     this.gridSize  = cols * cols;
     this.numPlayers         = numPlayers;
@@ -92,7 +97,8 @@ class Game {
     this.clickedUnits1      = 0;
     this.clickedUnits2      = 0;
     this.newSoldiers        = 0;
-    this.shape              = shape;       // 'square' | 'hex'
+    this.shape              = shape;       // 'square' | 'hex' | 'triangle'
+    this.islandMode         = islandMode; // 'open' | 'fortified'
     this.botDiffs           = { ...diff }; // per-player difficulty map
     this.botActive          = true;       // set false on game reset to cancel pending timeouts
 
@@ -216,6 +222,14 @@ class Game {
       el.classList.add(pk);
       el.innerHTML = '<h2>2</h2>';
     });
+
+    // Fortified mode: seed each unclaimed space with 1–6 random defenders
+    if (this.islandMode === 'fortified') {
+      document.querySelectorAll('.space').forEach(el => {
+        if (this.playerKeys.some(pk => el.classList.contains(pk))) return;
+        el.innerHTML = `<h2>${Math.ceil(Math.random() * 6)}</h2>`;
+      });
+    }
   }
 
   init() {
@@ -856,6 +870,15 @@ class Game {
     btn.addEventListener('click', () => {
       currentShape = btn.dataset.shape;
       document.querySelectorAll('.shape-btn').forEach(b =>
+        b.classList.toggle('active', b === btn));
+      startGame(currentCols);
+    });
+  });
+
+  document.querySelectorAll('.island-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentIslandMode = btn.dataset.mode;
+      document.querySelectorAll('.island-btn').forEach(b =>
         b.classList.toggle('active', b === btn));
       startGame(currentCols);
     });
