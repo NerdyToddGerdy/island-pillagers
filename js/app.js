@@ -1,8 +1,13 @@
 'use strict';
 
-const VERSION = '1.2.0';
+const VERSION = '1.3.0';
 
 const CHANGELOG = `
+  <h3>v1.3.0 — 2026-03-05</h3>
+  <ul>
+    <li>Light/dark mode toggle with system preference detection and localStorage persistence</li>
+    <li>All colors refactored to CSS custom properties for clean theme switching</li>
+  </ul>
   <h3>v1.2.0 — 2026-03-05</h3>
   <ul>
     <li>Fortified Islands mode: unclaimed spaces start with 1–6 random defenders</li>
@@ -892,6 +897,23 @@ class Game {
         b.classList.toggle('active', b === btn));
       startGame(currentCols);
     });
+  });
+
+  // ── Theme toggle ───────────────────────────────────────
+  const themeToggle = document.getElementById('theme-toggle');
+
+  function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+    themeToggle.textContent = theme === 'light' ? '\u263D' : '\u2600';
+  }
+
+  const savedTheme = localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  applyTheme(savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    applyTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
   });
 
   updateBotControlVisibility(currentNumPlayers);
