@@ -1,4 +1,4 @@
-# Island Pillaging
+# GerdQuest: Isle Raid
 ## Brief description
 My game is a land grabbing game with a pirate theme.  The objective is to grab islands before the other player does.  As the board starts to fill up you will be fighting the other player by attacking their spaces as well.  I based it off a game I used to play on my iPad called 'Strategery'. (https://itunes.apple.com/us/app/strategery/id298908505?mt=8)
 ## technologies used

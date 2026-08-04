@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Island Pillaging is a browser-based two-player land-grabbing strategy game with a pirate theme, inspired by the iOS game "Strategery." Players take turns attacking adjacent islands and rebuilding forces on a 4x4 grid.
+GerdQuest: Isle Raid is a browser-based two-player land-grabbing strategy game with a pirate theme, inspired by the iOS game "Strategery." Players take turns attacking adjacent islands and rebuilding forces on a 4x4 grid.
 
 ## Running the Game
 

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Island Pillagers are documented here.
+All notable changes to GerdQuest: Isle Raid are documented here.
 
 ## [1.1.1] - 2026-03-04
 
