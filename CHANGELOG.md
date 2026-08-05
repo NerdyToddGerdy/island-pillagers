@@ -2,6 +2,22 @@
 
 All notable changes to GerdQuest: Isle Raid are documented here.
 
+## [1.6.0] - 2026-08-04
+
+### Changed
+- Wordmark restructured to the GerdQuest series format — one `<h1>` with the series prefix small, uppercase and letter-spaced above the installment name (#33)
+- Typography replaced with the franchise faces: Metamorphous (display), Spectral (body), JetBrains Mono (numbers) (#36)
+- Numbers a player counts — island unit counts, dice totals, scores, round counter, version badge — are now mono and tabular-lined, so columns stop shifting as values change
+- Flag image is now decorative (`alt=""`), keeping the accessible name of the heading to the title itself
+
+### Added
+- `fonts/` — five self-hosted woff2 faces (latin subset, 105 KB total) with `OFL.txt` and a README recording each family's licence and role
+- `js/vendor/` — sweetalert2 6.4.4, now served locally, **including its stylesheet, which was never loaded before**
+
+### Removed
+- Google Fonts CDN link (Cinzel Decorative, IM Fell English SC)
+- jsDelivr CDN script tag for sweetalert2
+
 ## [1.5.0] - 2026-08-04
 
 ### Changed
