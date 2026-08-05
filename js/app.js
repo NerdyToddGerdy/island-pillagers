@@ -1,11 +1,17 @@
 'use strict';
 
-const VERSION = '1.4.0';
+const VERSION = '1.5.0';
 
 // Mirrors CHANGELOG.md — update both together when releasing.
 // Not generated from it: the game is meant to be opened as a local file, and
 // fetch() on file:// is blocked, so the notes have to be inlined here.
 const CHANGELOG = `
+  <h3>v1.5.0 — 2026-08-04</h3>
+  <ul>
+    <li>Franchise palette adopted for the sidebar, setup strip and menus</li>
+    <li>Sidebar text darkened so it reads against the parchment panels</li>
+    <li>Light mode removed — the game ships one committed dark theme</li>
+  </ul>
   <h3>v1.4.0 — 2026-08-04</h3>
   <ul>
     <li>Renamed to GerdQuest: Isle Raid, adopting the GerdQuest series prefix</li>
@@ -904,23 +910,6 @@ class Game {
         b.classList.toggle('active', b === btn));
       startGame(currentCols);
     });
-  });
-
-  // ── Theme toggle ───────────────────────────────────────
-  const themeToggle = document.getElementById('theme-toggle');
-
-  function applyTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem('theme', theme);
-    themeToggle.textContent = theme === 'light' ? '\u263D' : '\u2600';
-  }
-
-  const savedTheme = localStorage.getItem('theme') ||
-    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-  applyTheme(savedTheme);
-
-  themeToggle.addEventListener('click', () => {
-    applyTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
   });
 
   updateBotControlVisibility(currentNumPlayers);
