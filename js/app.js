@@ -1,11 +1,15 @@
 'use strict';
 
-const VERSION = '1.8.0';
+const VERSION = '1.8.1';
 
 // Mirrors CHANGELOG.md — update both together when releasing.
 // Not generated from it: the game is meant to be opened as a local file, and
 // fetch() on file:// is blocked, so the notes have to be inlined here.
 const CHANGELOG = `
+  <h3>v1.8.1 — 2026-08-05</h3>
+  <ul>
+    <li>Wider sidebar — the rules and dice readout no longer set in narrow ragged lines. The board is unchanged; the width came from empty space beside it</li>
+  </ul>
   <h3>v1.8.0 — 2026-08-05</h3>
   <ul>
     <li>The whole game now fits one screen — no scrolling to see the board and the sidebar together</li>

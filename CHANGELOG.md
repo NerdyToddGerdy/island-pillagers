@@ -2,6 +2,12 @@
 
 All notable changes to GerdQuest: Isle Raid are documented here.
 
+## [1.8.1] - 2026-08-05
+
+### Changed
+- Sidebar widened from 240px to 310px (260px below 1100px wide). The rules panel and dice readout were setting in narrow, ragged lines
+- The board is unaffected at every size checked: it is limited by the height left after the chrome, not by width, so the sidebar took the empty space beside it rather than any of the board
+
 ## [1.8.0] - 2026-08-05
 
 ### Changed
