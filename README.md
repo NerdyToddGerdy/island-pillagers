@@ -11,7 +11,7 @@ My game is a land grabbing game with a pirate theme.  The objective is to grab i
 I attempted to use sweetalert2.js .
 
 ## link to live site
-https://Toadilicious.github.io
+https://nerdytoddgerdy.github.io/island-pillagers/
 ## installation instructions
 There are currently none
 
