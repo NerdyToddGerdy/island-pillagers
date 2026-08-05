@@ -1,11 +1,17 @@
 'use strict';
 
-const VERSION = '1.5.0';
+const VERSION = '1.6.0';
 
 // Mirrors CHANGELOG.md — update both together when releasing.
 // Not generated from it: the game is meant to be opened as a local file, and
 // fetch() on file:// is blocked, so the notes have to be inlined here.
 const CHANGELOG = `
+  <h3>v1.6.0 — 2026-08-04</h3>
+  <ul>
+    <li>New title treatment: GerdQuest above Isle Raid</li>
+    <li>Franchise typefaces, now served from the game itself rather than a CDN</li>
+    <li>Unit counts, dice totals and scores set in a monospaced face so columns line up</li>
+  </ul>
   <h3>v1.5.0 — 2026-08-04</h3>
   <ul>
     <li>Franchise palette adopted for the sidebar, setup strip and menus</li>
