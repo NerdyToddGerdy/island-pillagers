@@ -98,7 +98,7 @@
 
   /* Fixed-width flanks of the one-screen grid; the map takes the rest. */
   --col-word: 260px;
-  --col-side: 240px;
+  --col-side: 310px;
 }
 
 /* §3: the focus ring is always visible and never removed. */
@@ -795,7 +795,7 @@ body{
 }
 
 @media (max-width: 1100px) {
-  :root { --col-word: 210px; --col-side: 210px; }
+  :root { --col-word: 210px; --col-side: 260px; }
 }
 
 @media (max-width: 900px) {
