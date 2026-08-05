@@ -2,6 +2,21 @@
 
 All notable changes to GerdQuest: Isle Raid are documented here.
 
+## [1.5.0] - 2026-08-04
+
+### Changed
+- Adopted the GerdQuest franchise palette for all chrome — body, sidebar, setup strip, buttons, warning, dice panel and release-notes modal now use the shared torchlight tokens (#34)
+- Text on the parchment panels switched to ink tones. The round counter, dice readout and modal heading were previously pale-on-pale and hard to read
+
+### Added
+- Visible focus ring on every interactive element, per bible §3
+
+### Removed
+- Light/dark theme toggle and the `[data-theme="light"]` palette — a GerdQuest game ships committed dark (#35)
+
+### Kept as a documented exception
+- The ocean-gradient map, island colours and per-player colours. The board is Isle Raid's own identity; only the chrome is franchise-standard. Recorded in `CLAUDE.md`
+
 ## [1.4.0] - 2026-08-04
 
 ### Changed

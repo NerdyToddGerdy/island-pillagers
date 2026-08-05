@@ -1,48 +1,66 @@
+/* ── GerdQuest franchise palette (bible §3) ─────────────────
+   Canonical source: notequest_browser src/ui/theme/tokens.css
+
+   Committed dark. There is no light mode and no theme toggle —
+   this is one lit scene, not a document that inverts.
+
+   Title-specific exception, documented in CLAUDE.md: the board
+   keeps its ocean identity. Franchise tokens dress the chrome;
+   the sea and the islands stay Isle Raid's own.               */
 :root {
-  --page-bg-top:          #0d1b2a;
-  --page-bg-bottom:       #1a2f45;
-  --map-bg:               linear-gradient(145deg, #0096c7 0%, #0077b6 40%, #023e8a 100%);
-  --heading-color:        #e8c97a;
+  color-scheme: dark;
+
+  --bg-0:         #0a0807;   /* page background, near-black   */
+  --bg-1:         #17110d;   /* raised dark surfaces          */
+  --torch-core:   #ffc06a;   /* brightest flame               */
+  --torch-mid:    #d9791f;   /* flame body, glows             */
+  --ember:        #b8481f;   /* dying flame                   */
+  --gold:         #b8862f;   /* borders, interactive          */
+  --gold-bright:  #e0ac48;   /* wordmark, emphasis            */
+  --parchment:    #e9ddc2;   /* primary paper surface         */
+  --parchment-2:  #ddcca2;
+  --parchment-3:  #cbb686;
+  --ink:          #2a2016;   /* body text on parchment        */
+  --ink-soft:     #5a4b38;   /* secondary text on parchment   */
+  --danger:       #a63c1d;   /* damage, loss, warnings        */
+  --focus:        #f2c265;   /* focus ring — never removed    */
+
+  /* Isle Raid exception: the sea. */
+  --map-bg: linear-gradient(145deg, #0096c7 0%, #0077b6 40%, #023e8a 100%);
+
+  /* This title's parchment is a photographic texture (largeimage.jpg,
+     roughly #c9ab80) — darker than the franchise --parchment #e9ddc2.
+     --danger reads at only 2.9:1 on it, so danger *text* on parchment
+     uses a deepened variant. Surfaces and borders still use --danger. */
+  --danger-deep: #6e2412;
+
+  /* Derived from the tokens above; alpha variants CSS can't mix inline. */
   --setup-group-bg:       rgba(255, 255, 255, 0.05);
-  --setup-group-border:   rgba(232, 201, 122, 0.2);
-  --setup-label-color:    rgba(232, 201, 122, 0.65);
-  --sidebar-border:       #000;
-  --muted-text:           #dfdac0;
-  --footer-text:          rgba(255, 255, 255, 0.45);
-  --footer-link:          #4a9edd;
-  --version-color:        rgba(232, 201, 122, 0.65);
-  --version-border:       rgba(232, 201, 122, 0.3);
-  --version-hover-color:  rgba(232, 201, 122, 0.95);
-  --version-hover-border: rgba(232, 201, 122, 0.65);
+  --setup-group-border:   rgba(184, 134, 47, 0.28);
+  --setup-label-color:    rgba(224, 172, 72, 0.75);
+  --footer-text:          rgba(233, 221, 194, 0.45);
+  --footer-link:          var(--gold-bright);
+  --version-color:        rgba(224, 172, 72, 0.70);
+  --version-border:       rgba(184, 134, 47, 0.35);
+  --version-hover-color:  var(--gold-bright);
+  --version-hover-border: var(--gold);
 }
 
-[data-theme="light"] {
-  --page-bg-top:          #b8d4e8;
-  --page-bg-bottom:       #c8b99a;
-  --map-bg:               linear-gradient(145deg, #5ec9f0 0%, #3daed9 40%, #1a7ab5 100%);
-  --heading-color:        #5c3d10;
-  --setup-group-bg:       rgba(0, 0, 0, 0.06);
-  --setup-group-border:   rgba(92, 61, 16, 0.25);
-  --setup-label-color:    rgba(92, 61, 16, 0.7);
-  --sidebar-border:       rgba(92, 61, 16, 0.5);
-  --muted-text:           #5c3d10;
-  --footer-text:          rgba(50, 35, 15, 0.65);
-  --footer-link:          #0d5a8a;
-  --version-color:        rgba(92, 61, 16, 0.7);
-  --version-border:       rgba(92, 61, 16, 0.3);
-  --version-hover-color:  rgba(92, 61, 16, 1);
-  --version-hover-border: rgba(92, 61, 16, 0.65);
+/* §3: the focus ring is always visible and never removed. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 body{
-  background: linear-gradient(to bottom, var(--page-bg-top), var(--page-bg-bottom));
+  background: linear-gradient(to bottom, var(--bg-1), var(--bg-0));
   min-height: 100vh;
   font-family: 'IM Fell English SC', serif;
 }
 H1{
   flex: 0 0 100%;
   text-align: center;
-  color: var(--heading-color);
+  color: var(--gold-bright);
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
   margin-bottom: 0;
 }
@@ -123,7 +141,8 @@ h1 img{
   text-align: center;
   padding: 22px 15px;
   cursor: pointer;
-  background-color: #dfdac0;
+  background-color: var(--parchment-2);
+  color: var(--ink);
   box-shadow: inset 0 0 24px 2px rgba(0, 0, 0, 0.65);
   font-family: 'IM Fell English SC', serif;
   font-size: 1.15em;
@@ -131,17 +150,23 @@ h1 img{
   transition: background-color 0.15s, box-shadow 0.15s;
 }
 .button:hover {
-  background-color: #e8e2c8;
+  background-color: var(--parchment);
   box-shadow: inset 0 0 24px 2px rgba(0, 0, 0, 0.5),
-              0 0 12px rgba(184, 134, 11, 0.35);
+              0 0 12px rgba(184, 134, 47, 0.45);
 }
 .clicked-space{
   box-shadow: 0 0 0 3px white, 0 0 20px rgba(255, 255, 255, 0.6),
               5px 6px 18px rgba(0, 0, 0, 0.55);
 }
 .new-space{
-  border: 3px solid rgba(255, 215, 0, 0.85);
-  box-shadow: 0 0 14px rgba(255, 215, 0, 0.45), 5px 6px 18px rgba(0, 0, 0, 0.55);
+  border: 3px solid var(--gold-bright);
+  box-shadow: 0 0 14px rgba(224, 172, 72, 0.5), 5px 6px 18px rgba(0, 0, 0, 0.55);
+}
+
+/* Parchment panels. `color-scheme: dark` makes the UA default text
+   colour white, so anything sitting on parchment must set ink itself. */
+.turns, .scores, .rules {
+  color: var(--ink);
 }
 
 .turns{
@@ -169,14 +194,13 @@ h1 img{
 }
 
 #round-counter {
-  color: var(--muted-text);
+  color: var(--ink);
   font-size: 0.85em;
   padding: 4px 0 0;
-  opacity: 0.8;
 }
 
 .side-bar{
-  border: 3px solid var(--sidebar-border);
+  border: 3px solid var(--gold);
   display: flex;
   margin: 10px 0 0 0;
   border-radius: 10px;
@@ -188,8 +212,8 @@ h1 img{
 }
 
 .button:active {
-  background-color: darkgoldenrod;
-  color: #fff;
+  background-color: var(--gold);
+  color: var(--bg-0);
   transform: translateY(3px);
   box-shadow: inset 0 0 18px 2px rgba(0, 0, 0, 0.5);
 }
@@ -218,10 +242,10 @@ h1 img{
   width: 100%;
   box-sizing: border-box;
   background: url(../images/largeimage.jpg);
-  border: 2px solid rgba(120, 32, 32, 0.7);
+  border: 2px solid rgba(166, 60, 29, 0.75);
   text-align: center;
   padding: 10px 15px;
-  color: #7a2020;
+  color: var(--danger-deep);
   font-size: 1.05em;
   animation: warning-fade-in 0.2s ease,
              warning-blink   0.4s ease 0.2s 5;
@@ -233,8 +257,8 @@ h1 img{
 }
 
 @keyframes warning-blink {
-  0%, 100% { border-color: rgba(120, 32, 32, 0.7); }
-  50%       { border-color: rgba(120, 32, 32, 0.05); }
+  0%, 100% { border-color: rgba(166, 60, 29, 0.75); }
+  50%       { border-color: rgba(166, 60, 29, 0.05); }
 }
 
 #dice-result {
@@ -246,7 +270,7 @@ h1 img{
   text-align: center;
   padding: 10px 15px;
   font-size: 0.8em;
-  color: var(--muted-text);
+  color: var(--ink);
 }
 
 #dice-attacker,
@@ -257,7 +281,7 @@ h1 img{
 #dice-outcome {
   font-weight: bold;
   margin-top: 6px;
-  color: gold;
+  color: var(--danger-deep);
 }
 
 #setup {
@@ -301,27 +325,27 @@ h1 img{
 }
 
 /* Shared button base — all types consolidated */
-.size-btn, .player-btn, .shape-btn, .island-btn, .theme-btn, .bot-btn {
+.size-btn, .player-btn, .shape-btn, .island-btn, .bot-btn {
   font-family: 'IM Fell English SC', serif;
   font-size: 0.85em;
   padding: 5px 14px;
-  background-color: #dfdac0;
+  background-color: var(--parchment-2);
   border: none;
   border-radius: 6px;
   cursor: pointer;
   box-shadow: inset 0 0 8px 1px rgba(0,0,0,0.5);
-  color: #1a1a1a;
+  color: var(--ink);
 }
-.size-btn:hover, .player-btn:hover, .shape-btn:hover, .island-btn:hover, .theme-btn:hover, .bot-btn:hover {
-  background-color: darkgoldenrod;
-  color: #fff;
+.size-btn:hover, .player-btn:hover, .shape-btn:hover, .island-btn:hover, .bot-btn:hover {
+  background-color: var(--gold);
+  color: var(--bg-0);
 }
-.size-btn:active, .player-btn:active, .shape-btn:active, .island-btn:active, .theme-btn:active, .bot-btn:active {
+.size-btn:active, .player-btn:active, .shape-btn:active, .island-btn:active, .bot-btn:active {
   transform: translate(2px, 2px);
 }
-.size-btn.active, .player-btn.active, .shape-btn.active, .island-btn.active, .theme-btn.active, .bot-btn.active {
-  background-color: darkgoldenrod;
-  color: #fff;
+.size-btn.active, .player-btn.active, .shape-btn.active, .island-btn.active, .bot-btn.active {
+  background-color: var(--gold);
+  color: var(--bg-0);
 }
 
 .bot-rows {
@@ -512,7 +536,7 @@ h1 img{
 #changelog-modal {
   position: fixed;
   inset: 0;
-  background: rgba(5, 15, 28, 0.82);
+  background: rgba(10, 8, 7, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -527,7 +551,7 @@ h1 img{
   width: min(460px, 92vw);
   max-height: 80vh;
   background: url(../images/largeimage.jpg);
-  border: 3px double rgba(139, 105, 20, 0.75);
+  border: 3px double rgba(184, 134, 47, 0.75);
   border-radius: 4px;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.75), inset 0 0 60px rgba(0, 0, 0, 0.12);
   display: flex;
@@ -540,20 +564,20 @@ h1 img{
   align-items: center;
   justify-content: space-between;
   padding: 14px 18px 10px;
-  border-bottom: 2px solid rgba(139, 105, 20, 0.45);
+  border-bottom: 2px solid rgba(184, 134, 47, 0.45);
 }
 #changelog-header h2 {
   margin: 0;
   font-family: 'Cinzel Decorative', cursive;
   font-size: 1em;
-  color: #e8c97a;
+  color: var(--ink);
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.45);
   letter-spacing: 0.05em;
 }
 #changelog-close {
   background: none;
-  border: 1px solid rgba(139, 105, 20, 0.45);
-  color: #5c3d10;
+  border: 1px solid rgba(184, 134, 47, 0.45);
+  color: var(--ink-soft);
   font-family: 'IM Fell English SC', serif;
   font-size: 0.95em;
   width: 28px;
@@ -566,17 +590,17 @@ h1 img{
   transition: background 0.15s;
 }
 #changelog-close:hover {
-  background: rgba(139, 105, 20, 0.25);
+  background: rgba(184, 134, 47, 0.25);
 }
 #changelog-body {
   overflow-y: auto;
   padding: 14px 20px 20px;
-  color: #2a1f0f;
+  color: var(--ink);
 }
 #changelog-body h3 {
   font-family: 'Cinzel Decorative', cursive;
   font-size: 0.8em;
-  color: #5c3d10;
+  color: var(--ink-soft);
   margin: 14px 0 6px;
   letter-spacing: 0.04em;
 }
@@ -637,7 +661,7 @@ h1 img{
     padding: 5px 8px 6px;
   }
 
-  .size-btn, .bot-btn, .player-btn, .shape-btn, .island-btn, .theme-btn {
+  .size-btn, .bot-btn, .player-btn, .shape-btn, .island-btn {
     padding: 4px 10px;
     font-size: 0.8em;
   }
@@ -652,5 +676,5 @@ h1 img{
 @media (max-width: 400px) {
   #setup { gap: 5px; }
   .setup-group { padding: 4px 6px 5px; }
-  .size-btn, .bot-btn, .player-btn, .shape-btn, .island-btn, .theme-btn { padding: 3px 7px; font-size: 0.75em; }
+  .size-btn, .bot-btn, .player-btn, .shape-btn, .island-btn { padding: 3px 7px; font-size: 0.75em; }
 }

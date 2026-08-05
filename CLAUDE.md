@@ -38,6 +38,16 @@ Two rules that bite constantly, repeated here so they apply even without fetchin
 
 **Not excused by this exception:** an injectable RNG. Making `rollDice()` take a seedable `() => number` is small, needs no build step, and is the single change that would make every future combat change testable. It remains worth doing.
 
+### Documented exception: the board keeps the sea (bible §3)
+
+§3's palette is adopted for **everything around the board** — body, sidebar, setup strip, buttons, panels, warning, dice readout, release-notes modal. Tokens are defined at the top of `css/style.css` with the franchise names (`--bg-0`, `--gold`, `--parchment`, `--ink`, `--danger`, `--focus`, …) and the canonical values.
+
+**The map is exempt.** The ocean gradient (`--map-bg`), the island gradients and the per-player colours stay as they are. §3's house look is "a character sheet lit by torchlight in a dark stone room"; Isle Raid's subject is an open sea in daylight, and the board is the one place where that reads as identity rather than inconsistency. Framing the sea in franchise chrome makes it look deliberate — recolouring it to torchlight would leave an island game with no visible water.
+
+Practically: **franchise tokens dress the chrome; the sea and the islands are Isle Raid's own.** If you are adding UI, use the tokens. If you are touching the board, leave the palette alone.
+
+**No light mode.** §3 is committed dark, and that part is followed exactly — `color-scheme: dark`, no toggle, no `[data-theme="light"]` block. The v1.3.0 toggle (#12, #13) was removed in v1.5.0 for this reason. A stale `theme` key may remain in some players' `localStorage`; nothing reads it, so it is inert rather than migrated.
+
 ### Documented exception: versioning scope (bible §6)
 
 §6 requires "every push to `main`" to carry a version bump, a dated `CHANGELOG.md` section, and a `vX.Y.Z` tag. Here that applies to **changes that affect the game**, not to repo hygiene — documentation, `CLAUDE.md`, CI, or tooling commits are not releases.
