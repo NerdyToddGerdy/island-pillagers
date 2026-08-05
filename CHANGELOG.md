@@ -2,6 +2,18 @@
 
 All notable changes to GerdQuest: Isle Raid are documented here.
 
+## [1.8.0] - 2026-08-05
+
+### Changed
+- The game fits one screen. `.container` is a three-column grid — wordmark and setup strip across the top, board and sidebar below, footer at the foot — and the body no longer scrolls above 680px wide
+- The board is square and sized from whichever dimension of its cell is smaller, using container query units, so it fills the height available rather than sitting at a fixed 700px. No resize listener and no hardcoded guess at how tall the chrome is
+- Island numbers scale with the board, so a 6×6 on a laptop still reads
+- The sidebar scrolls inside itself on short screens instead of pushing the page down
+- Under 680px the one-screen layout is dropped on purpose: the layout stacks and the page scrolls, which is the right shape for a phone
+
+### Fixed
+- Hex and triangle cells are pixel-sized in JS, so they went stale whenever the window changed. They are now recomputed in place on resize — the game keeps its state, the board just refits
+
 ## [1.7.0] - 2026-08-05
 
 ### Changed
