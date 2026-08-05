@@ -10,6 +10,10 @@
   <script src="js/vendor/sweetalert2.min.js"></script>
 </head>
 <body>
+  <!-- One screen, no page scroll. `.container` is a three-column grid:
+       wordmark | setup+score bar across the top, map | side-bar below,
+       footer across the foot. The footer lives inside the container so
+       the grid owns the whole viewport height. -->
   <div class="container">
 
     <div class="wordmark">
@@ -18,72 +22,82 @@
         <img src="images/flag.png" alt="">Isle Raid
       </h1>
     </div>
-    <div id="setup">
-      <div class="setup-group">
-        <span class="setup-label">Map Size</span>
-        <div class="setup-btns">
-          <button class="size-btn active" data-cols="4">4 × 4</button>
-          <button class="size-btn" data-cols="5">5 × 5</button>
-          <button class="size-btn" data-cols="6">6 × 6</button>
-        </div>
-      </div>
-      <div class="setup-group">
-        <span class="setup-label">Players</span>
-        <div class="setup-btns">
-          <button class="player-btn active" data-num="2">2</button>
-          <button class="player-btn" data-num="3">3</button>
-          <button class="player-btn" data-num="4">4</button>
-        </div>
-      </div>
-      <div class="setup-group">
-        <span class="setup-label">Shape</span>
-        <div class="setup-btns">
-          <button class="shape-btn active" data-shape="square">Square</button>
-          <button class="shape-btn" data-shape="hex">Hex</button>
-          <button class="shape-btn" data-shape="triangle">Triangle</button>
-        </div>
-      </div>
-      <div class="setup-group">
-        <span class="setup-label">Islands</span>
-        <div class="setup-btns">
-          <button class="island-btn active" data-mode="open">Open</button>
-          <button class="island-btn" data-mode="fortified">Fortified</button>
-        </div>
-      </div>
-      <div class="setup-group" id="bot-controls">
-        <span class="setup-label">Bots</span>
-        <div class="bot-rows">
-          <div class="bot-row">
-            <span class="bot-player-label bot-p2">P2</span>
-            <button class="bot-btn active" data-player="2" data-diff="off">Off</button>
-            <button class="bot-btn" data-player="2" data-diff="easy">Easy</button>
-            <button class="bot-btn" data-player="2" data-diff="medium">Med</button>
-            <button class="bot-btn" data-player="2" data-diff="hard">Hard</button>
-          </div>
-          <div class="bot-row p3-control">
-            <span class="bot-player-label bot-p3">P3</span>
-            <button class="bot-btn active" data-player="3" data-diff="off">Off</button>
-            <button class="bot-btn" data-player="3" data-diff="easy">Easy</button>
-            <button class="bot-btn" data-player="3" data-diff="medium">Med</button>
-            <button class="bot-btn" data-player="3" data-diff="hard">Hard</button>
-          </div>
-          <div class="bot-row p4-control">
-            <span class="bot-player-label bot-p4">P4</span>
-            <button class="bot-btn active" data-player="4" data-diff="off">Off</button>
-            <button class="bot-btn" data-player="4" data-diff="easy">Easy</button>
-            <button class="bot-btn" data-player="4" data-diff="medium">Med</button>
-            <button class="bot-btn" data-player="4" data-diff="hard">Hard</button>
+
+    <div id="top-bar">
+      <div id="setup">
+        <div class="setup-group">
+          <span class="setup-label">Map Size</span>
+          <div class="setup-btns">
+            <button class="size-btn active" data-cols="4">4 × 4</button>
+            <button class="size-btn" data-cols="5">5 × 5</button>
+            <button class="size-btn" data-cols="6">6 × 6</button>
           </div>
         </div>
+        <div class="setup-group">
+          <span class="setup-label">Players</span>
+          <div class="setup-btns">
+            <button class="player-btn active" data-num="2">2</button>
+            <button class="player-btn" data-num="3">3</button>
+            <button class="player-btn" data-num="4">4</button>
+          </div>
+        </div>
+        <div class="setup-group">
+          <span class="setup-label">Shape</span>
+          <div class="setup-btns">
+            <button class="shape-btn active" data-shape="square">Square</button>
+            <button class="shape-btn" data-shape="hex">Hex</button>
+            <button class="shape-btn" data-shape="triangle">Triangle</button>
+          </div>
+        </div>
+        <div class="setup-group">
+          <span class="setup-label">Islands</span>
+          <div class="setup-btns">
+            <button class="island-btn active" data-mode="open">Open</button>
+            <button class="island-btn" data-mode="fortified">Fortified</button>
+          </div>
+        </div>
+        <div class="setup-group" id="bot-controls">
+          <span class="setup-label">Bots</span>
+          <div class="bot-rows">
+            <div class="bot-row">
+              <span class="bot-player-label bot-p2">P2</span>
+              <button class="bot-btn active" data-player="2" data-diff="off">Off</button>
+              <button class="bot-btn" data-player="2" data-diff="easy">Easy</button>
+              <button class="bot-btn" data-player="2" data-diff="medium">Med</button>
+              <button class="bot-btn" data-player="2" data-diff="hard">Hard</button>
+            </div>
+            <div class="bot-row p3-control">
+              <span class="bot-player-label bot-p3">P3</span>
+              <button class="bot-btn active" data-player="3" data-diff="off">Off</button>
+              <button class="bot-btn" data-player="3" data-diff="easy">Easy</button>
+              <button class="bot-btn" data-player="3" data-diff="medium">Med</button>
+              <button class="bot-btn" data-player="3" data-diff="hard">Hard</button>
+            </div>
+            <div class="bot-row p4-control">
+              <span class="bot-player-label bot-p4">P4</span>
+              <button class="bot-btn active" data-player="4" data-diff="off">Off</button>
+              <button class="bot-btn" data-player="4" data-diff="easy">Easy</button>
+              <button class="bot-btn" data-player="4" data-diff="medium">Med</button>
+              <button class="bot-btn" data-player="4" data-diff="hard">Hard</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="score-bar">
+        <div class="score-segment" id="seg-player1"></div>
+        <div class="score-segment" id="seg-player2"></div>
+        <div class="score-segment" id="seg-player3"></div>
+        <div class="score-segment" id="seg-player4"></div>
       </div>
     </div>
-    <div id="score-bar">
-      <div class="score-segment" id="seg-player1"></div>
-      <div class="score-segment" id="seg-player2"></div>
-      <div class="score-segment" id="seg-player3"></div>
-      <div class="score-segment" id="seg-player4"></div>
+
+    <!-- The map is square and sized from whichever of this cell's two
+         dimensions is smaller, so it fills the height it is given
+         without ever pushing the page past one screen. -->
+    <div class="map-area">
+      <div class="map"></div>
     </div>
-    <div class="map"></div>
+
     <div class="side-bar">
       <button class="button" id="end-phase-btn">⚔ End Attack</button>
       <div class="turns">
@@ -100,11 +114,12 @@
       <div class="rules"></div>
       <div id="warning" hidden></div>
     </div>
-  </div>
-  <div class="footer">
-    <a href="https://nerdytoddgerdy.github.io/nerdy-gerdy-games/">More Games</a>
-    &nbsp;·&nbsp;
-    <span id="version"></span>
+
+    <div class="footer">
+      <a href="https://nerdytoddgerdy.github.io/nerdy-gerdy-games/">More Games</a>
+      &nbsp;·&nbsp;
+      <span id="version"></span>
+    </div>
   </div>
 
   <div id="changelog-modal" hidden>

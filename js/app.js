@@ -1,11 +1,17 @@
 'use strict';
 
-const VERSION = '1.7.0';
+const VERSION = '1.8.0';
 
 // Mirrors CHANGELOG.md — update both together when releasing.
 // Not generated from it: the game is meant to be opened as a local file, and
 // fetch() on file:// is blocked, so the notes have to be inlined here.
 const CHANGELOG = `
+  <h3>v1.8.0 — 2026-08-05</h3>
+  <ul>
+    <li>The whole game now fits one screen — no scrolling to see the board and the sidebar together</li>
+    <li>The board grows and shrinks with your window instead of sitting at a fixed size</li>
+    <li>Phones still scroll, which is the right thing there</li>
+  </ul>
   <h3>v1.7.0 — 2026-08-05</h3>
   <ul>
     <li>All in-game text rewritten — plainer, and it now tells you how combat actually resolves</li>
@@ -111,6 +117,19 @@ document.addEventListener('DOMContentLoaded', () => {
     activeGame.init();
   }
 
+  // The board is sized from the viewport, so hex and triangle cells —
+  // which are pixel-sized in JS — go stale when the window changes.
+  // Resize in place rather than rebuilding: a rebuild would reset the game.
+  // One listener for the page's lifetime; games come and go beneath it.
+  let resizeFrame = null;
+  window.addEventListener('resize', () => {
+    if (resizeFrame) cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = null;
+      if (activeGame) activeGame.applyShapeMetrics();
+    });
+  });
+
 class Game {
   constructor(cols = 4, diff = {}, numPlayers = 2, shape = 'square', islandMode = 'open') {
     this.cols      = cols;
@@ -150,16 +169,16 @@ class Game {
 
   // ── Bootstrap ──────────────────────────────────────────
 
-  buildGrid() {
-    this.mapEl.innerHTML = '';
+  // Hex and triangle cells are pixel-sized from the map's measured box,
+  // and the map is now sized from the viewport, so every recomputation
+  // has to be repeatable — on build and on resize alike. The square
+  // grid needs none of this: its columns are `1fr`.
+  applyShapeMetrics() {
+    const pad = parseInt(getComputedStyle(this.mapEl).paddingLeft, 10) || 28;
+    const contentW = this.mapEl.clientWidth - 2 * pad;
+    if (contentW <= 0) return;                 // laid out to nothing — nothing to size
 
     if (this.shape === 'hex') {
-      this.mapEl.classList.add('hex-mode');
-      this.mapEl.classList.remove('tri-mode');
-
-      // Dynamically size hexes to fill the actual rendered map width
-      const pad = parseInt(getComputedStyle(this.mapEl).paddingLeft, 10) || 28;
-      const contentW = this.mapEl.offsetWidth - 2 * pad;
       // Width constraint: odd rows span w*(cols+0.5) ≤ contentW
       const wByWidth  = Math.floor(contentW / (this.cols + 0.5));
       // Height constraint: total height = h*(3*cols+1)/4 ≤ contentW (map is square)
@@ -173,6 +192,43 @@ class Game {
       this.mapEl.style.setProperty('--hex-gap',        '0px');
       this.mapEl.style.setProperty('--hex-row-offset', '-' + (h / 4) + 'px');
       this.mapEl.style.setProperty('--hex-half-w',     (w / 2) + 'px');
+
+    } else if (this.shape === 'triangle') {
+      // Width constraint: row_w = w*(cols+1)/2 ≤ contentW → w ≤ 2*contentW/(cols+1)
+      const wByWidth  = Math.floor(2 * contentW / (this.cols + 1));
+      // Height constraint: h*cols ≤ contentW, h = w*0.866 → w ≤ contentW/(0.866*cols)
+      const wByHeight = Math.floor(contentW / (0.866 * this.cols));
+      const w = Math.min(wByWidth, wByHeight);
+      const h = Math.round(w * 0.866);
+
+      this.mapEl.style.setProperty('--tri-w',       w + 'px');
+      this.mapEl.style.setProperty('--tri-h',       h + 'px');
+      this.mapEl.style.setProperty('--tri-row-w',   Math.round(w * (this.cols + 1) / 2) + 'px');
+      this.mapEl.style.setProperty('--tri-total-h', (h * this.cols) + 'px');
+      this.triW = w;
+      this.triH = h;
+
+      // Triangles are absolutely positioned, so they move with the size.
+      for (let r = 0; r < this.cols; r++) {
+        for (let c = 0; c < this.cols; c++) {
+          const el = document.getElementById(`space-${r * this.cols + c}`);
+          if (!el) continue;
+          el.style.left = (c * w / 2) + 'px';
+          el.style.top  = (r * h) + 'px';
+        }
+      }
+    }
+  }
+
+  buildGrid() {
+    this.mapEl.innerHTML = '';
+    // Read by the island-number font scale in CSS, in every shape.
+    this.mapEl.style.setProperty('--grid-cols', this.cols);
+
+    if (this.shape === 'hex') {
+      this.mapEl.classList.add('hex-mode');
+      this.mapEl.classList.remove('tri-mode');
+      this.applyShapeMetrics();
 
       const wrapper = document.createElement('div');
       wrapper.className = 'hex-grid-wrapper';
@@ -195,25 +251,6 @@ class Game {
       this.mapEl.classList.add('tri-mode');
       this.mapEl.classList.remove('hex-mode');
 
-      // Dynamically size triangles to fill the actual rendered map width
-      const pad = parseInt(getComputedStyle(this.mapEl).paddingLeft, 10) || 28;
-      const contentW = this.mapEl.offsetWidth - 2 * pad;
-      // Width constraint: row_w = w*(cols+1)/2 ≤ contentW → w ≤ 2*contentW/(cols+1)
-      const wByWidth  = Math.floor(2 * contentW / (this.cols + 1));
-      // Height constraint: h*cols ≤ contentW, h = w*0.866 → w ≤ contentW/(0.866*cols)
-      const wByHeight = Math.floor(contentW / (0.866 * this.cols));
-      const w = Math.min(wByWidth, wByHeight);
-      const h = Math.round(w * 0.866);
-      const rowW   = Math.round(w * (this.cols + 1) / 2);
-      const totalH = h * this.cols;
-
-      this.mapEl.style.setProperty('--tri-w',       w + 'px');
-      this.mapEl.style.setProperty('--tri-h',       h + 'px');
-      this.mapEl.style.setProperty('--tri-row-w',   rowW + 'px');
-      this.mapEl.style.setProperty('--tri-total-h', totalH + 'px');
-      this.triW = w;
-      this.triH = h;
-
       const wrapper = document.createElement('div');
       wrapper.className = 'tri-grid-wrapper';
 
@@ -224,17 +261,16 @@ class Game {
           div.className = 'space';
           div.id = `space-${r * this.cols + c}`;
           div.dataset.orientation = orientation;
-          div.style.left = (c * w / 2) + 'px';
-          div.style.top  = (r * h) + 'px';
           div.innerHTML = '<h2>0</h2>';
           wrapper.appendChild(div);
         }
       }
       this.mapEl.appendChild(wrapper);
+      // Sizes and places the triangles now that they are in the document.
+      this.applyShapeMetrics();
 
     } else {
       this.mapEl.classList.remove('hex-mode', 'tri-mode');
-      this.mapEl.style.setProperty('--grid-cols', this.cols);
 
       for (let i = 0; i < this.gridSize; i++) {
         const div = document.createElement('div');
