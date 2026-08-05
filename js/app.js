@@ -1,8 +1,15 @@
 'use strict';
 
-const VERSION = '1.3.0';
+const VERSION = '1.4.0';
 
+// Mirrors CHANGELOG.md — update both together when releasing.
+// Not generated from it: the game is meant to be opened as a local file, and
+// fetch() on file:// is blocked, so the notes have to be inlined here.
 const CHANGELOG = `
+  <h3>v1.4.0 — 2026-08-04</h3>
+  <ul>
+    <li>Renamed to GerdQuest: Isle Raid, adopting the GerdQuest series prefix</li>
+  </ul>
   <h3>v1.3.0 — 2026-03-05</h3>
   <ul>
     <li>Light/dark mode toggle with system preference detection and localStorage persistence</li>

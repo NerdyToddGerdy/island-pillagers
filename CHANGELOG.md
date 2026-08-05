@@ -2,6 +2,26 @@
 
 All notable changes to GerdQuest: Isle Raid are documented here.
 
+## [1.4.0] - 2026-08-04
+
+### Changed
+- Renamed from "Island Pillaging" to **GerdQuest: Isle Raid**, adopting the GerdQuest series prefix
+- Page title, in-game heading, README and CHANGELOG updated to the new name
+- README live-site link corrected — it pointed at a domain this game has never deployed to
+
+## [1.3.0] - 2026-03-05
+
+### Added
+- Light/dark mode toggle with system preference detection and localStorage persistence (#13)
+
+### Changed
+- All colors refactored to CSS custom properties for clean theme switching (#12)
+
+## [1.2.0] - 2026-03-05
+
+### Added
+- Fortified Islands mode: unclaimed spaces start with 1–6 random defenders (#24)
+
 ## [1.1.1] - 2026-03-04
 
 ### Changed
