@@ -2,6 +2,18 @@
 
 All notable changes to GerdQuest: Isle Raid are documented here.
 
+## [1.7.0] - 2026-08-05
+
+### Changed
+- Every player-facing string rewritten to the franchise voice — plain, present tense, no exclamation marks, never cute (#38)
+- Terminology settled: the board holds **islands**, and the pieces on them are **crew**. Previously the same things were called spaces, soldiers, pirates, mateys, seadogs and units, sometimes in the same sentence
+- The Attack Phase panel now states the combat rule outright: each side rolls one die per crew and the higher total takes the island. Bible §4 asks that the real odds be told when it costs nothing, and this was never explained anywhere
+- Combat outcomes read as statements rather than cheers — "The island changes hands." / "The island holds."
+- Victory text no longer congratulates; it reports
+
+### Fixed
+- Red is reserved for harm again: only a *failed* raid shows the danger colour. Both outcomes previously rendered red
+
 ## [1.6.0] - 2026-08-04
 
 ### Changed

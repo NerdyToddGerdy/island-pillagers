@@ -1,11 +1,17 @@
 'use strict';
 
-const VERSION = '1.6.0';
+const VERSION = '1.7.0';
 
 // Mirrors CHANGELOG.md — update both together when releasing.
 // Not generated from it: the game is meant to be opened as a local file, and
 // fetch() on file:// is blocked, so the notes have to be inlined here.
 const CHANGELOG = `
+  <h3>v1.7.0 — 2026-08-05</h3>
+  <ul>
+    <li>All in-game text rewritten — plainer, and it now tells you how combat actually resolves</li>
+    <li>The rules panel explains that each side rolls one die per crew, so you can judge a raid before making it</li>
+    <li>A failed raid reads in red; a successful one no longer does</li>
+  </ul>
   <h3>v1.6.0 — 2026-08-04</h3>
   <ul>
     <li>New title treatment: GerdQuest above Isle Raid</li>
@@ -327,7 +333,7 @@ class Game {
     document.querySelector('.turns').dataset.player = this.currentPlayer;
     document.querySelector('#phase').textContent = 'Rebuild Phase';
     document.querySelector('.rules').innerHTML =
-      `<h3>Rebuild Phase</h3><p>You gain 1 new pirate per space you own. Add these mateys to any of your spaces.</p><h3>You have ${this.newSoldiers} seadogs available.</h3>`;
+      `<h3>Rebuild Phase</h3><p>Every island you hold sends one crew. Put them where you expect the next raid.</p><h3>${this.newSoldiers} left to place</h3>`;
     document.getElementById('end-phase-btn').textContent = '⚓ End Rebuild';
 
     if (this.isBotTurn()) {
@@ -363,7 +369,8 @@ class Game {
 
       const units = parseInt(el.textContent.trim(), 10);
       if (units < 2) {
-        this.showWarning('Not enough soldiers! You need at least 2 pirates to attack.');
+        // An owned island always holds at least one, so this is always exactly one.
+        this.showWarning('A raid needs two crew — this island holds one.');
         return;
       }
 
@@ -401,7 +408,7 @@ class Game {
     el.innerHTML = `<h2>${current + 1}</h2>`;
     this.newSoldiers--;
     document.querySelector('.rules').innerHTML =
-      `<h3>Rebuild Phase</h3><p>You gain 1 new pirate per space you own. Add these mateys to any of your spaces.</p><h3>You have ${this.newSoldiers} seadogs available.</h3>`;
+      `<h3>Rebuild Phase</h3><p>Every island you hold sends one crew. Put them where you expect the next raid.</p><h3>${this.newSoldiers} left to place</h3>`;
     this.syncOnline();
   }
 
@@ -429,8 +436,10 @@ class Game {
     document.getElementById('dice-defender').textContent =
       `Defender: [${defenderRolls.join(', ')}] = ${defenderTotal}`;
     const attackerWins = attackerTotal > defenderTotal;
-    document.getElementById('dice-outcome').textContent =
-      attackerWins ? 'Attacker wins!' : 'Defender holds!';
+    // §3 reserves red for harm, so only a failed raid gets it.
+    const outcomeEl = document.getElementById('dice-outcome');
+    outcomeEl.textContent = attackerWins ? 'The island changes hands.' : 'The island holds.';
+    outcomeEl.classList.toggle('held', !attackerWins);
     document.getElementById('dice-result').removeAttribute('hidden');
 
     if (attackerWins) {
@@ -482,10 +491,10 @@ class Game {
     if (this.activePlayers.length === 1) {
       const winner = this.activePlayers[0];
       swal({
-        title: 'Victory!',
-        text: `Congratulations, ${this.players[winner].name}! You have conquered all the islands!`,
+        title: 'The map is yours',
+        text: `${this.players[winner].name} holds every island. There is nothing left to raid.`,
         type: 'success',
-        confirmButtonText: 'Play Again'
+        confirmButtonText: 'Raid again'
       }).then(() => {
         location.reload();
       });
@@ -642,7 +651,7 @@ class Game {
     document.getElementById('phase').textContent = 'Attack Phase';
     document.querySelector('.turns').dataset.player = this.currentPlayer;
     document.querySelector('.rules').innerHTML =
-      '<h3>Attack Phase</h3><p>Select any of your spaces with at least 2 pirates, then attack an adjacent space. When done, press \'End Attack\'.</p>';
+      '<h3>Attack Phase</h3><p>Pick an island holding at least two crew, then strike one beside it. Each side rolls a die per crew and the higher total takes the island — the bigger stack usually wins, and usually is not always. Press End Attack when you are done.</p>';
     document.getElementById('end-phase-btn').textContent = '⚔ End Attack';
   }
 
@@ -669,8 +678,8 @@ class Game {
       const units = playerUnits[pk];
       const label = this.players[pk].name;
       return units === 0
-        ? `<p>${label}: <em>eliminated</em></p>`
-        : `<p>${label}: ${units} unit${units !== 1 ? 's' : ''}</p>`;
+        ? `<p>${label}: <em>out</em></p>`
+        : `<p>${label}: ${units} crew</p>`;
     }).join('');
 
     // Score bar — proportional by units owned

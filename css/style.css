@@ -383,6 +383,10 @@ body{
 #dice-outcome {
   font-weight: bold;
   margin-top: 6px;
+  color: var(--ink);
+}
+/* Red is reserved for harm — a raid that failed. */
+#dice-outcome.held {
   color: var(--danger-deep);
 }
 
