@@ -14,6 +14,36 @@ No build system, package manager, or server required. Open `index.html` directly
 open index.html
 ```
 
+## Franchise standard
+
+This is a GerdQuest title and follows the franchise bible:
+https://github.com/NerdyToddGerdy/notequest_browser/blob/fix/runid-desync-and-rename/docs/franchise-bible.md
+
+There is deliberately **no local copy** in this repo — a copy plus a link means the copy gets read and the link gets updated. Read the canonical document before changing visual identity, player-facing copy, naming, or versioning.
+
+Two rules that bite constantly, repeated here so they apply even without fetching the bible:
+
+- **The title is always "GerdQuest: Isle Raid", never "Isle Raid" alone.** A live Google Play island-conquest game called *Island Raid: Merge Tactics* owns the short name; the series prefix is what makes this title distinctive. Treat a bare "Isle Raid" in any user-facing text or metadata as a bug. (Issue #43.)
+- **No NoteQuest-derived content belongs in this repo.** Only *Realm of Depths* adapts NoteQuest. This title adapts nothing, so it carries no NoteQuest credit either — crediting a source you didn't use implies a relationship that doesn't exist. (Bible §1.)
+
+### Documented exception: the stack (bible §6)
+
+**The bible's §6 stack conventions — React + TypeScript + Vite, strict TS, `npm run build` typechecking, Vitest, Playwright — are deliberately not followed here.** §6 permits this "unless a title has a real reason to differ"; this is the reason, recorded so it isn't rediscovered as an oversight.
+
+**Why.** Those conventions are inherited from *Realm of Depths*, which needs them: it is a large React/TS application where a build step buys real safety. Isle Raid is a single `Game` class of DOM code with no dependencies, and its zero-toolchain property is a genuine feature rather than an accident — `open index.html` runs the current game, on any machine, with no install step, forever. Adopting the franchise stack would mean rewriting a working, deployed game for no player-visible benefit and no gameplay change.
+
+**What this costs, honestly.** No typechecking. No test suite. `rollDice()` calls `Math.random()` directly, so combat logic cannot be exercised deterministically without patching globals. The `Die` component (§3) is React in the flagship repo and needs a vanilla port here regardless of this decision.
+
+**What would reverse it.** Any of: extracting the shared `Die`/tokens/fonts package that §8.4 anticipates; the engine growing to where untested combat logic becomes a real liability; or a backend landing (§6 Backends) with state-serialisation logic worth testing. If the stack is revisited, generating the in-app release-notes modal from `CHANGELOG.md` at build time becomes possible too — see below.
+
+**Not excused by this exception:** an injectable RNG. Making `rollDice()` take a seedable `() => number` is small, needs no build step, and is the single change that would make every future combat change testable. It remains worth doing.
+
+### Documented exception: versioning scope (bible §6)
+
+§6 requires "every push to `main`" to carry a version bump, a dated `CHANGELOG.md` section, and a `vX.Y.Z` tag. Here that applies to **changes that affect the game**, not to repo hygiene — documentation, `CLAUDE.md`, CI, or tooling commits are not releases.
+
+The reason is specific to this title: `CHANGELOG.md` is mirrored into a **player-facing** release-notes modal (click the version badge). A player reading "documented a stack exception" has been shown noise, not a release note. Everything that changes what a player sees or does still follows §6 exactly.
+
 ## Architecture
 
 The entire game logic lives in `js/app.js` as a single ES module (`<script type="module">`). No jQuery, no globals — all state is encapsulated in a `Game` class.
